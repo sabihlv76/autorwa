@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   description:
     "Autorwa is a multilingual marketplace for cars and automotive spare parts in Rwanda.",
   icons: {
-    icon: "/logo.jpg",
+    icon: "/logo.svg",
   },
 };
 

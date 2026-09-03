@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useActionState } from "react";
+import { GoogleSignInButton } from "@/components/auth/GoogleSignInButton";
 import { useLocale } from "@/components/providers/LocaleProvider";
 import { FormField } from "@/components/ui/FormField";
 import { SubmitButton } from "@/components/ui/SubmitButton";
@@ -15,6 +16,14 @@ export function SignInForm() {
   return (
     <form action={formAction} className="space-y-4">
       <h1 className="text-lg font-semibold text-black">{dictionary.auth.signIn}</h1>
+
+      <GoogleSignInButton />
+
+      <div className="flex items-center gap-3">
+        <span className="h-px flex-1 bg-zinc-200" aria-hidden="true" />
+        <span className="text-xs text-zinc-400">{dictionary.auth.orContinueWith}</span>
+        <span className="h-px flex-1 bg-zinc-200" aria-hidden="true" />
+      </div>
 
       {state.error && <p className="text-sm text-red-600">{state.error}</p>}
 

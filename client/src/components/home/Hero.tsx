@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { AmbientBackground } from "@/components/layout/AmbientBackground";
 import { useLocale } from "@/components/providers/LocaleProvider";
+import { HeroSearch } from "./HeroSearch";
 import { HeroSlider } from "./HeroSlider";
 
 function CarGraphic() {
@@ -108,6 +109,10 @@ export function Hero({
         ) : (
           <CarGraphic />
         )}
+      </div>
+
+      <div className="relative z-10 mx-auto max-w-7xl px-4 pb-10 sm:px-6 lg:px-8 lg:pb-16">
+        <HeroSearch />
       </div>
     </section>
   );

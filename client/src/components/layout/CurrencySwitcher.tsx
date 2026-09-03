@@ -1,14 +1,15 @@
 "use client";
 
+import { Flag, type FlagCode } from "@/components/ui/Flag";
 import { IconSelect } from "@/components/ui/IconSelect";
 import { useLocale } from "@/components/providers/LocaleProvider";
 import { useCurrency } from "@/components/providers/CurrencyProvider";
 import { currencies } from "@/lib/currency";
 import type { Currency } from "@/types/product";
 
-const currencyFlags: Record<Currency, string> = {
-  USD: "🇺🇸",
-  RWF: "🇷🇼",
+const currencyFlags: Record<Currency, FlagCode> = {
+  USD: "US",
+  RWF: "RW",
 };
 
 export function CurrencySwitcher() {
@@ -23,7 +24,7 @@ export function CurrencySwitcher() {
       options={currencies.map((c) => ({
         value: c,
         label: c,
-        icon: currencyFlags[c],
+        icon: <Flag code={currencyFlags[c]} />,
       }))}
     />
   );

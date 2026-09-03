@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 import { ContactWidget } from "@/components/layout/ContactWidget";
+import { Footer } from "@/components/layout/Footer";
 import { Navbar } from "@/components/layout/Navbar";
 import { PopularTags } from "@/components/layout/PopularTags";
 import { QuickLinks } from "@/components/layout/QuickLinks";
@@ -16,12 +17,13 @@ export default async function PublicLayout({
 
   return (
     <>
-      <PopularTags />
       <Navbar cartItemCount={cartItemCount} />
+      <PopularTags />
       <Suspense fallback={<div className="h-10 border-b border-zinc-200 bg-white" />}>
         <QuickLinks />
       </Suspense>
       <main className="flex-1 bg-zinc-50">{children}</main>
+      <Footer />
       <ContactWidget />
     </>
   );

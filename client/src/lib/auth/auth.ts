@@ -1,6 +1,7 @@
 import bcrypt from "bcryptjs";
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
+import Google from "next-auth/providers/google";
 import * as userRepository from "@/repositories/userRepository";
 import { signInSchema } from "@/lib/validation/auth";
 import { checkRateLimit } from "@/lib/rateLimiter";
@@ -13,6 +14,13 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     signIn: "/signin",
   },
   providers: [
+    // Requires AUTH_GOOGLE_ID / AUTH_GOOGLE_SECRET in .env.local (see
+    // .env.example) — until those are set, the "Continue with Google"
+    // button renders but signing in will fail with a config error.
+    Google({
+      clientId: process.env.AUTH_GOOGLE_ID,
+      clientSecret: process.env.AUTH_GOOGLE_SECRET,
+    }),
     Credentials({
       credentials: {
         email: { label: "Email", type: "email" },
@@ -50,10 +58,29 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     }),
   ],
   callbacks: {
-    jwt({ token, user }) {
+    async signIn({ user, account }) {
+      if (account?.provider !== "google") return true;
+      // The User schema requires a passwordHash, so there's no
+      // account-creation path for Google yet — only let it link to an
+      // email that already has a working password-based account.
+      if (!user.email) return false;
+      const existing = await userRepository.findByEmail(user.email);
+      return existing !== null && existing.accountStatus === "active";
+    },
+    async jwt({ token, user, account }) {
       if (user) {
-        token.id = user.id as string;
-        token.role = user.role as Role;
+        if (account?.provider === "google" && user.email) {
+          // Google's `user.id` is its own OAuth subject, not ours — signIn
+          // already confirmed a matching account exists, so look it up.
+          const appUser = await userRepository.findByEmail(user.email);
+          if (appUser) {
+            token.id = appUser.id;
+            token.role = appUser.role;
+          }
+        } else {
+          token.id = user.id as string;
+          token.role = user.role as Role;
+        }
       }
       return token;
     },

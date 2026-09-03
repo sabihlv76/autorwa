@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useLocale } from "@/components/providers/LocaleProvider";
 import { useCurrency } from "@/components/providers/CurrencyProvider";
@@ -37,13 +38,25 @@ export function ProductCard({
   const rentable = product.type === "vehicle" && isRentable(product);
   const sellable = product.type === "vehicle" ? isSellable(product) : true;
 
+  const image = product.images[0];
+
   return (
-    <div className="flex flex-col overflow-hidden rounded-md border border-zinc-200 bg-white">
+    <div className="group flex flex-col overflow-hidden rounded-md border border-zinc-200 bg-white transition-shadow hover:shadow-md">
       <Link
         href={`/products/${product.slug}`}
-        className="relative flex h-36 items-center justify-center bg-zinc-50"
+        className="relative flex h-36 items-center justify-center overflow-hidden bg-zinc-50"
       >
-        <ProductPlaceholderIcon type={product.type} />
+        {image ? (
+          <Image
+            src={image}
+            alt={product.title}
+            fill
+            sizes="(min-width: 1280px) 22vw, (min-width: 640px) 30vw, 45vw"
+            className="object-cover transition-transform duration-300 group-hover:scale-105"
+          />
+        ) : (
+          <ProductPlaceholderIcon type={product.type} />
+        )}
         <div className="absolute left-2 top-2 flex flex-col gap-1">
           {product.featured && (
             <span className="rounded bg-accent px-1.5 py-0.5 text-[10px] font-semibold uppercase text-white">

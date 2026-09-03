@@ -452,6 +452,46 @@ export async function countByType(): Promise<{ vehicle: number; spare_part: numb
   return { vehicle, spare_part };
 }
 
+/** Available-vehicle counts grouped by `make`, for the homepage "Search by Make" cards. */
+export async function countVehiclesByMake(): Promise<Record<string, number>> {
+  await connectToDatabase();
+  const rows = await ProductModel.aggregate<{ _id: string; count: number }>([
+    { $match: { type: "vehicle", availability: "available" } },
+    { $group: { _id: "$make", count: { $sum: 1 } } },
+  ]);
+  return Object.fromEntries(rows.map((r) => [r._id, r.count]));
+}
+
+/** Available-vehicle counts grouped by `bodyType`, for the homepage "Search by Type" cards. */
+export async function countVehiclesByBodyType(): Promise<Record<string, number>> {
+  await connectToDatabase();
+  const rows = await ProductModel.aggregate<{ _id: string; count: number }>([
+    { $match: { type: "vehicle", availability: "available" } },
+    { $group: { _id: "$bodyType", count: { $sum: 1 } } },
+  ]);
+  return Object.fromEntries(rows.map((r) => [r._id, r.count]));
+}
+
+/** Available vehicles for homepage discovery rails (Featured / Latest Arrivals). */
+export async function findVehicles({
+  featured,
+  limit,
+}: {
+  featured?: boolean;
+  limit: number;
+}): Promise<Product[]> {
+  await connectToDatabase();
+  const query: MongoFilter = { type: "vehicle", availability: "available" };
+  if (featured) query.featured = true;
+
+  const docs = await ProductModel.find(query)
+    .sort({ createdAt: -1 })
+    .limit(limit)
+    .lean<ProductDoc[]>();
+
+  return docs.map(toProduct);
+}
+
 export async function findManyForAdmin({
   page,
   pageSize,

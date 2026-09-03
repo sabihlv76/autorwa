@@ -8,6 +8,11 @@ import { SubmitButton } from "@/components/ui/SubmitButton";
 import { signUpAction } from "@/features/auth/actions/signup";
 import { initialActionState } from "@/features/auth/actions/actionState";
 
+// No "Continue with Google" here: the signIn callback in
+// src/lib/auth/auth.ts only lets Google link to an email that already has
+// a password-based account (the User model requires a password, so there's
+// no account-creation path for it yet) — it would just fail for anyone
+// actually trying to sign up this way. It's on the sign-in form instead.
 export function SignUpForm() {
   const { dictionary } = useLocale();
   const [state, formAction] = useActionState(signUpAction, initialActionState);
