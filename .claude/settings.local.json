@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir -p src)",
+      "Bash(mv app *)",
+      "Bash(npm run *)",
+      "Bash(timeout 40 bash -c 'until curl -sf http://localhost:3000 >/dev/null; do sleep 1; done')",
+      "Bash(npx --yes playwright --version)",
+      "Bash(npx --yes playwright install chromium --with-deps)",
+      "Bash(ls \"/c/Program Files/Google/Chrome/Application\" 2>&1)",
+      "Read(//c/Program Files/Google/Chrome/Application/**)"
+    ]
+  }
+}
