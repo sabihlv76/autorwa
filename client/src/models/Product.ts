@@ -7,6 +7,9 @@ const sellerSnapshotSchema = new Schema(
     verified: { type: Boolean, required: true },
     location: { type: String, required: true },
     whatsapp: { type: String, required: true },
+    enterprise: { type: Boolean },
+    rating: { type: Number },
+    createdAt: { type: Date },
   },
   { _id: false },
 );

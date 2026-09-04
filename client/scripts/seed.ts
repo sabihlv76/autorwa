@@ -53,11 +53,13 @@ async function seed() {
   ]);
 
   const insertedSellers = await SellerModel.insertMany(
-    mockSellers.map(({ name, verified, location, whatsapp }) => ({
+    mockSellers.map(({ name, verified, location, whatsapp, enterprise, rating }) => ({
       name,
       verified,
       location,
       whatsapp,
+      enterprise: enterprise ?? false,
+      rating,
     })),
   );
 
@@ -94,6 +96,9 @@ async function seed() {
         verified: seller.verified,
         location: seller.location,
         whatsapp: seller.whatsapp,
+        enterprise: seller.enterprise,
+        rating: seller.rating,
+        createdAt: seller.createdAt,
       },
       createdAt: new Date(product.createdAt),
       updatedAt: new Date(product.createdAt),

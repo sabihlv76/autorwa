@@ -8,6 +8,9 @@ interface SellerDoc {
   verified: boolean;
   location: string;
   whatsapp: string;
+  enterprise?: boolean;
+  rating?: number;
+  createdAt?: Date;
 }
 
 function toSeller(doc: SellerDoc): Seller {
@@ -17,6 +20,9 @@ function toSeller(doc: SellerDoc): Seller {
     verified: doc.verified,
     location: doc.location,
     whatsapp: doc.whatsapp,
+    enterprise: doc.enterprise ?? false,
+    rating: doc.rating,
+    createdAt: doc.createdAt ? new Date(doc.createdAt).toISOString() : undefined,
   };
 }
 
@@ -42,13 +48,24 @@ export async function create({
   verified,
   location,
   whatsapp,
+  enterprise,
+  rating,
 }: {
   name: string;
   verified: boolean;
   location: string;
   whatsapp: string;
+  enterprise?: boolean;
+  rating?: number;
 }): Promise<Seller> {
   await connectToDatabase();
-  const doc = await SellerModel.create({ name, verified, location, whatsapp });
+  const doc = await SellerModel.create({
+    name,
+    verified,
+    location,
+    whatsapp,
+    enterprise: enterprise ?? false,
+    rating,
+  });
   return toSeller(doc.toObject() as unknown as SellerDoc);
 }

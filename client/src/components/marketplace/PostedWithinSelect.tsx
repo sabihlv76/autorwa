@@ -2,33 +2,31 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { useLocale } from "@/components/providers/LocaleProvider";
-import { buildQueryString, parseSort } from "@/features/products/lib/searchParams";
+import { buildQueryString } from "@/features/products/lib/searchParams";
 
-export function SortDropdown() {
+export function PostedWithinSelect() {
   const { dictionary } = useLocale();
   const router = useRouter();
   const searchParams = useSearchParams();
   const currentParams = Object.fromEntries(searchParams.entries());
-  const sort = parseSort(currentParams);
+  const postedWithin = currentParams.postedWithin ?? "all";
 
   function onChange(value: string) {
-    const qs = buildQueryString(currentParams, { sort: value });
+    const qs = buildQueryString(currentParams, { postedWithin: value === "all" ? null : value });
     router.push(qs ? `/marketplace?${qs}` : "/marketplace");
   }
 
   return (
     <label className="flex items-center gap-2 text-sm">
-      <span className="text-zinc-600">{dictionary.sort.label}</span>
       <select
-        value={sort}
+        value={postedWithin}
         onChange={(e) => onChange(e.target.value)}
         className="rounded-md border border-zinc-300 px-2 py-1.5 text-sm"
       >
-        <option value="recommended">{dictionary.sort.recommended}</option>
-        <option value="newest">{dictionary.sort.newest}</option>
-        <option value="oldest">{dictionary.sort.oldest}</option>
-        <option value="price_asc">{dictionary.sort.priceAsc}</option>
-        <option value="price_desc">{dictionary.sort.priceDesc}</option>
+        <option value="all">{dictionary.sort.anyTime}</option>
+        <option value="24h">{dictionary.sort.last24h}</option>
+        <option value="7d">{dictionary.sort.last7d}</option>
+        <option value="30d">{dictionary.sort.last30d}</option>
       </select>
     </label>
   );

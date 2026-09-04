@@ -43,6 +43,8 @@ export function SellersAdminClient({ sellers }: { sellers: Seller[] }) {
               <th className="px-3 py-2.5">Location</th>
               <th className="px-3 py-2.5">WhatsApp</th>
               <th className="px-3 py-2.5">Verified</th>
+              <th className="px-3 py-2.5">Enterprise</th>
+              <th className="px-3 py-2.5">Rating</th>
             </tr>
           </thead>
           <tbody>
@@ -59,6 +61,16 @@ export function SellersAdminClient({ sellers }: { sellers: Seller[] }) {
                   >
                     {seller.verified ? "Verified" : "Unverified"}
                   </span>
+                </td>
+                <td className="px-3 py-2.5">
+                  {seller.enterprise && (
+                    <span className="rounded-full bg-green-50 px-2 py-0.5 text-xs font-medium text-green-700">
+                      Enterprise
+                    </span>
+                  )}
+                </td>
+                <td className="px-3 py-2.5 text-zinc-500">
+                  {seller.rating ? seller.rating.toFixed(1) : "—"}
                 </td>
               </tr>
             ))}

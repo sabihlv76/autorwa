@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { SessionProvider } from "next-auth/react";
 import { CurrencyProvider } from "@/components/providers/CurrencyProvider";
@@ -36,6 +37,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             <CurrencyProvider>{children}</CurrencyProvider>
           </LocaleProvider>
         </SessionProvider>
+        <Analytics />
       </body>
     </html>
   );

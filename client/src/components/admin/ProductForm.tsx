@@ -8,6 +8,7 @@ import { IconSelect } from "@/components/ui/IconSelect";
 import { ImageUploadField } from "@/components/ui/ImageUploadField";
 import { SelectField } from "@/components/ui/SelectField";
 import { SubmitButton } from "@/components/ui/SubmitButton";
+import { ALL_CAR_MAKES } from "@/lib/carMakes";
 import { currencies } from "@/lib/currency";
 import type { ProductFormState } from "@/features/admin/actions/productForm";
 import type { Currency, Product, ProductType, Seller } from "@/types/product";
@@ -64,6 +65,11 @@ export function ProductForm({
     product?.type === "vehicle" ? product.listingType : "sale",
   );
   const errors = state.fieldErrors ?? {};
+  const existingMake = product?.type === "vehicle" ? product.make : "";
+  const makeOptions =
+    existingMake && !ALL_CAR_MAKES.includes(existingMake)
+      ? [existingMake, ...ALL_CAR_MAKES]
+      : ALL_CAR_MAKES;
 
   useEffect(() => {
     if (state.success) onSuccess?.();
@@ -184,12 +190,21 @@ export function ProductForm({
         <>
           <FormSection title="Vehicle details">
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              <FormField
+              <SelectField
                 label="Make"
                 name="make"
                 defaultValue={product?.type === "vehicle" ? product.make : ""}
                 required
-              />
+              >
+                <option value="" disabled>
+                  Choose a make
+                </option>
+                {makeOptions.map((make) => (
+                  <option key={make} value={make}>
+                    {make}
+                  </option>
+                ))}
+              </SelectField>
               <FormField
                 label="Model"
                 name="model"

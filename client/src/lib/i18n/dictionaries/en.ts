@@ -59,10 +59,15 @@ const en = {
   },
   sort: {
     label: "Sort by",
+    recommended: "Recommended",
     newest: "Newest first",
     oldest: "Oldest first",
     priceAsc: "Price: low to high",
     priceDesc: "Price: high to low",
+    anyTime: "Any time",
+    last24h: "Last 24 hours",
+    last7d: "Last 7 days",
+    last30d: "Last 30 days",
   },
   product: {
     negotiable: "Negotiable",
@@ -81,6 +86,7 @@ const en = {
     perDay: "/day",
     forRentBadge: "For Rent",
     orRentFrom: "or rent from",
+    yearsActive: "{count} yrs",
   },
   specs: {
     specifications: "Specifications",
@@ -152,6 +158,8 @@ const en = {
     results: "{count} results",
     noResults: "No products match your filters.",
     browseTitle: "Browse listings",
+    vehiclesTitle: "Vehicles",
+    sparePartsTitle: "Vehicle Parts & Accessories",
     homeTitle: "Cars and spare parts, in one marketplace",
     homeSubtitle:
       "Browse verified listings from trusted sellers and businesses across Rwanda.",

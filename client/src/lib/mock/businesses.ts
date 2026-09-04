@@ -7,6 +7,8 @@ export const mockSellers: Seller[] = [
     verified: true,
     location: "Kigali, Gasabo",
     whatsapp: "+250788100001",
+    enterprise: true,
+    rating: 4.7,
   },
   {
     id: "seller-rwanda-auto-parts",
@@ -14,6 +16,8 @@ export const mockSellers: Seller[] = [
     verified: true,
     location: "Kigali, Nyarugenge",
     whatsapp: "+250788100002",
+    enterprise: true,
+    rating: 4.3,
   },
   {
     id: "seller-musanze-cars",
@@ -21,6 +25,7 @@ export const mockSellers: Seller[] = [
     verified: true,
     location: "Musanze",
     whatsapp: "+250788100003",
+    rating: 4.0,
   },
   {
     id: "seller-huye-spares",

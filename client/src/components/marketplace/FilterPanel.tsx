@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocale } from "@/components/providers/LocaleProvider";
 import { buildQueryString, parseFilters } from "@/features/products/lib/searchParams";
 import { CAR_MAKES } from "@/lib/carMakes";
@@ -33,6 +33,17 @@ export function FilterPanel({
   const [filters, setFilters] = useState<FilterState>(() =>
     parseFilters(currentParams),
   );
+
+  // The panel keeps its own draft state so edits don't hit the URL until
+  // "Apply" is pressed — but that means it must be explicitly resynced
+  // whenever the URL changes from elsewhere (the Cars/Spare Parts tabs,
+  // a category pill, sort/pagination), or it keeps showing stale filters
+  // for the type/section the user just navigated away from.
+  const searchParamsKey = searchParams.toString();
+  useEffect(() => {
+    setFilters(parseFilters(currentParams));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParamsKey]);
 
   function update<K extends keyof FilterState>(key: K, value: FilterState[K]) {
     setFilters((prev) => ({ ...prev, [key]: value }));
@@ -84,40 +95,42 @@ export function FilterPanel({
         </select>
       </div>
 
-      <div>
-        <label className="mb-1 block text-xs font-medium text-zinc-600">
-          {dictionary.filters.make}
-        </label>
-        <div className="grid grid-cols-4 gap-1.5">
-          {CAR_MAKES.map((carMake) => {
-            const isSelected = filters.make.toLowerCase() === carMake.name.toLowerCase();
-            return (
-              <button
-                key={carMake.name}
-                type="button"
-                title={carMake.name}
-                aria-pressed={isSelected}
-                onClick={() => update("make", isSelected ? "" : carMake.name)}
-                className={`flex flex-col items-center gap-1 rounded-md border px-1 py-1.5 text-[10px] transition-colors ${
-                  isSelected
-                    ? "border-accent bg-accent/10 text-accent-dark"
-                    : "border-zinc-200 text-zinc-600 hover:border-zinc-400"
-                }`}
-              >
-                <BrandIcon icon={carMake.icon} className="h-4 w-4" />
-                <span className="truncate">{carMake.name}</span>
-              </button>
-            );
-          })}
+      {filters.type !== "spare_part" && (
+        <div>
+          <label className="mb-1 block text-xs font-medium text-zinc-600">
+            {dictionary.filters.make}
+          </label>
+          <div className="grid grid-cols-4 gap-1.5">
+            {CAR_MAKES.map((carMake) => {
+              const isSelected = filters.make.toLowerCase() === carMake.name.toLowerCase();
+              return (
+                <button
+                  key={carMake.name}
+                  type="button"
+                  title={carMake.name}
+                  aria-pressed={isSelected}
+                  onClick={() => update("make", isSelected ? "" : carMake.name)}
+                  className={`flex flex-col items-center gap-1 rounded-md border px-1 py-1.5 text-[10px] transition-colors ${
+                    isSelected
+                      ? "border-accent bg-accent/10 text-accent-dark"
+                      : "border-zinc-200 text-zinc-600 hover:border-zinc-400"
+                  }`}
+                >
+                  <BrandIcon icon={carMake.icon} className="h-4 w-4" />
+                  <span className="truncate">{carMake.name}</span>
+                </button>
+              );
+            })}
+          </div>
+          <input
+            type="text"
+            value={filters.make}
+            onChange={(e) => update("make", e.target.value)}
+            placeholder={dictionary.filters.orTypeMake}
+            className="mt-2 w-full rounded-md border border-zinc-300 px-2 py-1.5 text-sm"
+          />
         </div>
-        <input
-          type="text"
-          value={filters.make}
-          onChange={(e) => update("make", e.target.value)}
-          placeholder={dictionary.filters.orTypeMake}
-          className="mt-2 w-full rounded-md border border-zinc-300 px-2 py-1.5 text-sm"
-        />
-      </div>
+      )}
 
       {filters.type !== "vehicle" && (
         <div>

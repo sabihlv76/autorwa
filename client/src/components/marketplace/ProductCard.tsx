@@ -19,6 +19,20 @@ const availabilityStyles: Record<Product["availability"], string> = {
   out_of_stock: "bg-zinc-100 text-zinc-600",
 };
 
+const conditionStyles: Record<Product["condition"], string> = {
+  new: "bg-green-600 text-white",
+  used: "bg-zinc-700 text-white",
+  certified_pre_owned: "bg-zinc-700 text-white",
+};
+
+function yearsActive(createdAt?: string): number | null {
+  if (!createdAt) return null;
+  const years = Math.floor(
+    (Date.now() - new Date(createdAt).getTime()) / (365 * 24 * 60 * 60 * 1000),
+  );
+  return years;
+}
+
 export function ProductCard({
   product,
   isFavorited = false,
@@ -37,6 +51,14 @@ export function ProductCard({
   const isUnavailable = product.availability !== "available";
   const rentable = product.type === "vehicle" && isRentable(product);
   const sellable = product.type === "vehicle" ? isSellable(product) : true;
+  const location = product.type === "spare_part" ? product.seller.location : undefined;
+  const years = yearsActive(product.seller.createdAt);
+  const conditionLabel =
+    product.condition === "new"
+      ? dictionary.filters.new
+      : product.condition === "used"
+        ? dictionary.filters.used
+        : dictionary.filters.certifiedPreOwned;
 
   const image = product.images[0];
 
@@ -82,6 +104,11 @@ export function ProductCard({
             ]}
           </span>
         )}
+        <span
+          className={`absolute bottom-2 left-2 rounded px-1.5 py-0.5 text-[10px] font-semibold uppercase ${conditionStyles[product.condition]}`}
+        >
+          {conditionLabel}
+        </span>
         <FavoriteButton
           productId={product.id}
           initiallyFavorited={isFavorited}
@@ -97,6 +124,8 @@ export function ProductCard({
           {product.title}
         </Link>
         <span className="text-xs text-zinc-500">{specs}</span>
+        {location && <span className="text-xs text-zinc-500">{location}</span>}
+        <p className="line-clamp-2 text-xs text-zinc-500">{product.description}</p>
 
         <div className="mt-1 flex flex-wrap items-baseline gap-1">
           {sellable ? (
@@ -123,14 +152,30 @@ export function ProductCard({
           </span>
         )}
 
-        <div className="mt-1 flex items-center gap-1 text-xs text-zinc-500">
+        <div className="mt-1 flex flex-wrap items-center gap-1 text-xs text-zinc-500">
           <span className="line-clamp-1">{product.seller.name}</span>
           {product.seller.verified && (
             <span
               title={dictionary.product.verifiedSeller}
-              className="inline-flex h-3.5 w-3.5 items-center justify-center rounded-full bg-accent text-[9px] font-bold text-white"
+              className="inline-flex h-3.5 w-3.5 items-center justify-center rounded-full bg-green-600 text-[9px] font-bold text-white"
             >
               ✓
+            </span>
+          )}
+          {product.seller.enterprise && (
+            <span className="rounded bg-green-50 px-1 py-0.5 text-[9px] font-bold uppercase text-green-700">
+              Enterprise
+            </span>
+          )}
+          {years !== null && years > 0 && (
+            <span className="text-[10px] text-zinc-400">
+              {dictionary.product.yearsActive.replace("{count}", String(years))}
+            </span>
+          )}
+          {product.seller.rating && (
+            <span className="flex items-center gap-0.5 text-[10px] font-medium text-zinc-600">
+              <span className="text-amber-500">★</span>
+              {product.seller.rating.toFixed(1)}
             </span>
           )}
         </div>

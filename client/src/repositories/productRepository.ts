@@ -212,6 +212,16 @@ function buildFilterQuery(filters: FilterState): MongoFilter {
     query.mileageKm = { $lte: filters.maxMileageKm };
   }
 
+  if (filters.postedWithin !== "all") {
+    const hoursByWindow: Record<Exclude<FilterState["postedWithin"], "all">, number> = {
+      "24h": 24,
+      "7d": 24 * 7,
+      "30d": 24 * 30,
+    };
+    const cutoff = new Date(Date.now() - hoursByWindow[filters.postedWithin] * 60 * 60 * 1000);
+    query.createdAt = { $gte: cutoff };
+  }
+
   if (and.length > 0) {
     query.$and = and;
   }
@@ -228,8 +238,10 @@ function buildSort(sort: SortOption): Record<string, SortOrder> {
     case "price_desc":
       return { price: -1 };
     case "newest":
-    default:
       return { createdAt: -1 };
+    case "recommended":
+    default:
+      return { featured: -1, createdAt: -1 };
   }
 }
 

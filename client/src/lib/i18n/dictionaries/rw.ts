@@ -61,10 +61,15 @@ const rw: Dictionary = {
   },
   sort: {
     label: "Ndondeka",
+    recommended: "Byasabwe",
     newest: "Ibishya mbere",
     oldest: "Ibishaje mbere",
     priceAsc: "Igiciro: gito kugeza kinini",
     priceDesc: "Igiciro: kinini kugeza gito",
+    anyTime: "Igihe icyo ari cyo cyose",
+    last24h: "Amasaha 24 ashize",
+    last7d: "Iminsi 7 ishize",
+    last30d: "Iminsi 30 ishize",
   },
   product: {
     negotiable: "Cyumvikanwaho",
@@ -83,6 +88,7 @@ const rw: Dictionary = {
     perDay: "/umunsi",
     forRentBadge: "Gukodesha",
     orRentFrom: "cyangwa ukodeshe uhereye kuri",
+    yearsActive: "Imyaka {count}",
   },
   specs: {
     specifications: "Ibiranga",
@@ -154,6 +160,8 @@ const rw: Dictionary = {
     results: "Ibisubizo {count}",
     noResults: "Nta gicuruzwa kihuye n'ibyo washakaga.",
     browseTitle: "Reba ibicuruzwa",
+    vehiclesTitle: "Ibinyabiziga",
+    sparePartsTitle: "Ibice n'ibikoresho by'ibinyabiziga",
     homeTitle: "Imodoka n'ibice byazo ahantu hamwe",
     homeSubtitle:
       "Reba ibicuruzwa byemejwe biva ku bacuruzi n'ibigo byizerwa mu Rwanda hose.",

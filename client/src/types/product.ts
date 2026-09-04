@@ -28,6 +28,9 @@ export interface Seller {
   verified: boolean;
   location: string;
   whatsapp: string;
+  enterprise?: boolean;
+  rating?: number;
+  createdAt?: string;
 }
 
 interface ProductBase {
@@ -103,10 +106,13 @@ export interface Advertisement {
 }
 
 export type SortOption =
+  | "recommended"
   | "newest"
   | "oldest"
   | "price_asc"
   | "price_desc";
+
+export type PostedWithin = "all" | "24h" | "7d" | "30d";
 
 export interface FilterState {
   type: ProductType | "all";
@@ -125,4 +131,5 @@ export interface FilterState {
   maxMileageKm: number | null;
   seller: string;
   rentalOption: "all" | "sale" | "rent";
+  postedWithin: PostedWithin;
 }

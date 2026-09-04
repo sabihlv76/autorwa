@@ -11,6 +11,11 @@ const createSellerSchema = z.object({
   location: z.string().trim().min(2).max(150),
   whatsapp: phoneSchema,
   verified: z.preprocess((v) => v === "on", z.boolean()),
+  enterprise: z.preprocess((v) => v === "on", z.boolean()),
+  rating: z.preprocess(
+    (v) => (v === "" || v === null ? undefined : v),
+    z.coerce.number().min(1).max(5).optional(),
+  ),
 });
 
 export interface CreateSellerState {
@@ -31,6 +36,8 @@ export async function createSellerAction(
     location: formData.get("location"),
     whatsapp: formData.get("whatsapp"),
     verified: formData.get("verified"),
+    enterprise: formData.get("enterprise"),
+    rating: formData.get("rating"),
   });
 
   if (!parsed.success) {

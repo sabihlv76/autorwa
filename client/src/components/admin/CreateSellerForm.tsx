@@ -37,6 +37,23 @@ export function CreateSellerForm({ onCreated }: { onCreated?: () => void }) {
         />
         Verified
       </label>
+      <label className="flex items-center gap-2 text-sm font-medium text-black">
+        <input
+          type="checkbox"
+          name="enterprise"
+          className="h-4 w-4 rounded border-zinc-300 text-accent focus:ring-accent"
+        />
+        Enterprise seller
+      </label>
+      <FormField
+        label="Rating (1-5, optional)"
+        name="rating"
+        type="number"
+        min={1}
+        max={5}
+        step={0.1}
+        errors={state.fieldErrors?.rating}
+      />
       <SubmitButton>Create seller</SubmitButton>
     </form>
   );

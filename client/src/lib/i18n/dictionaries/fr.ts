@@ -61,10 +61,15 @@ const fr: Dictionary = {
   },
   sort: {
     label: "Trier par",
+    recommended: "Recommandé",
     newest: "Plus récent",
     oldest: "Plus ancien",
     priceAsc: "Prix croissant",
     priceDesc: "Prix décroissant",
+    anyTime: "N'importe quand",
+    last24h: "Dernières 24 heures",
+    last7d: "7 derniers jours",
+    last30d: "30 derniers jours",
   },
   product: {
     negotiable: "Négociable",
@@ -83,6 +88,7 @@ const fr: Dictionary = {
     perDay: "/jour",
     forRentBadge: "À louer",
     orRentFrom: "ou louez à partir de",
+    yearsActive: "{count} ans",
   },
   specs: {
     specifications: "Caractéristiques",
@@ -154,6 +160,8 @@ const fr: Dictionary = {
     results: "{count} résultats",
     noResults: "Aucun produit ne correspond à vos filtres.",
     browseTitle: "Parcourir les annonces",
+    vehiclesTitle: "Véhicules",
+    sparePartsTitle: "Pièces et accessoires automobiles",
     homeTitle: "Voitures et pièces détachées, dans un seul marché",
     homeSubtitle:
       "Parcourez des annonces vérifiées de vendeurs et entreprises de confiance partout au Rwanda.",

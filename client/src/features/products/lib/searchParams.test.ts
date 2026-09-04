@@ -53,16 +53,16 @@ describe("parseFilters", () => {
 });
 
 describe("parseSort", () => {
-  it("defaults to newest", () => {
-    expect(parseSort({})).toBe("newest");
+  it("defaults to recommended", () => {
+    expect(parseSort({})).toBe("recommended");
   });
 
   it("accepts a recognized sort value", () => {
     expect(parseSort({ sort: "price_asc" })).toBe("price_asc");
   });
 
-  it("falls back to newest for an unrecognized value", () => {
-    expect(parseSort({ sort: "random" })).toBe("newest");
+  it("falls back to recommended for an unrecognized value", () => {
+    expect(parseSort({ sort: "random" })).toBe("recommended");
   });
 });
 

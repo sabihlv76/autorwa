@@ -4,6 +4,7 @@ import { FilterDrawer } from "@/components/marketplace/FilterDrawer";
 import { FilterSidebar } from "@/components/marketplace/FilterSidebar";
 import { MarketplaceIntro } from "@/components/marketplace/MarketplaceIntro";
 import { Pagination } from "@/components/marketplace/Pagination";
+import { PostedWithinSelect } from "@/components/marketplace/PostedWithinSelect";
 import { ProductGrid } from "@/components/marketplace/ProductGrid";
 import { SortDropdown } from "@/components/marketplace/SortDropdown";
 import {
@@ -29,12 +30,13 @@ export default async function MarketplacePage({
   const sort = parseSort(resolvedSearchParams);
   const page = parsePage(resolvedSearchParams);
 
-  const [paginated, topLeftAd, topRightAd, sellers, session] = await Promise.all([
+  const [paginated, topLeftAd, topRightAd, sellers, session, makeCounts] = await Promise.all([
     productRepository.findMany({ filters, sort, page, pageSize: PAGE_SIZE }),
     advertisementRepository.getForPosition("top_left"),
     advertisementRepository.getForPosition("top_right"),
     sellerRepository.listAll(),
     auth(),
+    filters.type === "vehicle" ? productRepository.countVehiclesByMake() : Promise.resolve({}),
   ]);
 
   const favoritedProductIds = session?.user?.id
@@ -46,8 +48,6 @@ export default async function MarketplacePage({
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
-      <MarketplaceIntro />
-
       <div className="mb-4 flex flex-wrap justify-between gap-3">
         <div className="w-full max-w-xs">
           <AdSlot ad={topLeftAd} />
@@ -66,8 +66,16 @@ export default async function MarketplacePage({
           <FilterSidebar sellers={sellers} />
 
           <div className="min-w-0 flex-1">
-            <div className="mb-3 flex items-center justify-end">
+            <MarketplaceIntro
+              type={filters.type}
+              activeCategory={filters.category}
+              activeBodyType={filters.bodyType === "all" ? undefined : filters.bodyType}
+              makeCounts={makeCounts}
+            />
+
+            <div className="mb-3 flex items-center justify-end gap-2">
               <SortDropdown />
+              <PostedWithinSelect />
             </div>
 
             <ProductGrid

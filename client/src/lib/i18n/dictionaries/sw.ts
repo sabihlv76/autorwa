@@ -61,10 +61,15 @@ const sw: Dictionary = {
   },
   sort: {
     label: "Panga kwa",
+    recommended: "Inayopendekezwa",
     newest: "Mpya kwanza",
     oldest: "Zamani kwanza",
     priceAsc: "Bei: chini hadi juu",
     priceDesc: "Bei: juu hadi chini",
+    anyTime: "Wakati wowote",
+    last24h: "Saa 24 zilizopita",
+    last7d: "Siku 7 zilizopita",
+    last30d: "Siku 30 zilizopita",
   },
   product: {
     negotiable: "Inajadiliwa",
@@ -83,6 +88,7 @@ const sw: Dictionary = {
     perDay: "/siku",
     forRentBadge: "Kukodishwa",
     orRentFrom: "au kodisha kuanzia",
+    yearsActive: "Miaka {count}",
   },
   specs: {
     specifications: "Vipimo",
@@ -154,6 +160,8 @@ const sw: Dictionary = {
     results: "Matokeo {count}",
     noResults: "Hakuna bidhaa zinazolingana na vichujio vyako.",
     browseTitle: "Vinjari matangazo",
+    vehiclesTitle: "Magari",
+    sparePartsTitle: "Vipuri na Vifaa vya Gari",
     homeTitle: "Magari na vipuri, sokoni pamoja",
     homeSubtitle:
       "Vinjari matangazo yaliyothibitishwa kutoka kwa wauzaji na biashara za kuaminika kote Rwanda.",

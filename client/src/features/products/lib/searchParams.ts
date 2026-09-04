@@ -3,6 +3,7 @@ import type {
   Condition,
   FilterState,
   FuelType,
+  PostedWithin,
   ProductType,
   SortOption,
   TransmissionType,
@@ -37,11 +38,13 @@ const BODY_TYPES: BodyType[] = [
   "minibus",
 ];
 const SORT_OPTIONS: SortOption[] = [
+  "recommended",
   "newest",
   "oldest",
   "price_asc",
   "price_desc",
 ];
+const POSTED_WITHIN_OPTIONS: PostedWithin[] = ["all", "24h", "7d", "30d"];
 
 export function parseFilters(searchParams: RawSearchParams): FilterState {
   const type = first(searchParams.type);
@@ -50,6 +53,7 @@ export function parseFilters(searchParams: RawSearchParams): FilterState {
   const transmission = first(searchParams.transmission);
   const bodyType = first(searchParams.bodyType);
   const rentalOption = first(searchParams.rentalOption);
+  const postedWithin = first(searchParams.postedWithin);
 
   return {
     type: type && PRODUCT_TYPES.includes(type as ProductType)
@@ -80,6 +84,10 @@ export function parseFilters(searchParams: RawSearchParams): FilterState {
     seller: first(searchParams.seller) ?? "",
     rentalOption:
       rentalOption === "sale" || rentalOption === "rent" ? rentalOption : "all",
+    postedWithin:
+      postedWithin && POSTED_WITHIN_OPTIONS.includes(postedWithin as PostedWithin)
+        ? (postedWithin as PostedWithin)
+        : "all",
   };
 }
 
@@ -87,7 +95,7 @@ export function parseSort(searchParams: RawSearchParams): SortOption {
   const sort = first(searchParams.sort);
   return sort && SORT_OPTIONS.includes(sort as SortOption)
     ? (sort as SortOption)
-    : "newest";
+    : "recommended";
 }
 
 export function parsePage(searchParams: RawSearchParams): number {

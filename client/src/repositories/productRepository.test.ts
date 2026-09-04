@@ -65,6 +65,7 @@ const baseFilters = {
   maxMileageKm: null,
   seller: "",
   rentalOption: "all" as const,
+  postedWithin: "all" as const,
 };
 
 describe("productRepository.create / update / remove", () => {
