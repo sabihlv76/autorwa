@@ -1,6 +1,5 @@
 "use server";
 
-import { redirect } from "next/navigation";
 import { requireAdminAction } from "@/lib/auth/requireAdmin";
 import * as auditLogRepository from "@/repositories/auditLogRepository";
 import * as productRepository from "@/repositories/productRepository";
@@ -26,5 +25,5 @@ export async function createProductAction(
     metadata: { title: product.title, type: product.type },
   });
 
-  redirect("/ops-console/products");
+  return { success: true };
 }

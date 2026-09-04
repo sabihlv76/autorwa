@@ -1,10 +1,16 @@
 "use client";
 
-import { useActionState, useState } from "react";
+import { useActionState, useEffect, useState } from "react";
+import { Flag, type FlagCode } from "@/components/ui/Flag";
 import { FormField } from "@/components/ui/FormField";
+import { FormSection } from "@/components/ui/FormSection";
+import { IconSelect } from "@/components/ui/IconSelect";
+import { ImageUploadField } from "@/components/ui/ImageUploadField";
+import { SelectField } from "@/components/ui/SelectField";
 import { SubmitButton } from "@/components/ui/SubmitButton";
+import { currencies } from "@/lib/currency";
 import type { ProductFormState } from "@/features/admin/actions/productForm";
-import type { Product, ProductType, Seller } from "@/types/product";
+import type { Currency, Product, ProductType, Seller } from "@/types/product";
 
 type FormAction = (
   state: ProductFormState,
@@ -13,28 +19,30 @@ type FormAction = (
 
 const initialState: ProductFormState = { success: false };
 
-const inputClass = "w-full rounded-md border border-zinc-300 px-3 py-2 text-sm";
-const labelClass = "block text-sm font-medium text-black";
+const currencyFlags: Record<Currency, FlagCode> = {
+  USD: "US",
+  RWF: "RW",
+};
 
-function Field({
+function Checkbox({
+  name,
   label,
-  children,
-  errors,
+  defaultChecked,
 }: {
+  name: string;
   label: string;
-  children: React.ReactNode;
-  errors?: string[];
+  defaultChecked?: boolean;
 }) {
   return (
-    <div className="space-y-1">
-      <label className={labelClass}>{label}</label>
-      {children}
-      {errors?.map((message) => (
-        <p key={message} className="text-xs text-red-600">
-          {message}
-        </p>
-      ))}
-    </div>
+    <label className="flex items-center gap-2 text-sm font-medium text-black">
+      <input
+        type="checkbox"
+        name={name}
+        defaultChecked={defaultChecked}
+        className="h-4 w-4 rounded border-zinc-300 text-accent focus:ring-accent"
+      />
+      {label}
+    </label>
   );
 }
 
@@ -42,221 +50,224 @@ export function ProductForm({
   action,
   sellers,
   product,
+  onSuccess,
 }: {
   action: FormAction;
   sellers: Seller[];
   product?: Product;
+  onSuccess?: () => void;
 }) {
   const [state, formAction] = useActionState(action, initialState);
   const [type, setType] = useState<ProductType>(product?.type ?? "vehicle");
+  const [currency, setCurrency] = useState<Currency>(product?.currency ?? "RWF");
   const [listingType, setListingType] = useState<string>(
     product?.type === "vehicle" ? product.listingType : "sale",
   );
   const errors = state.fieldErrors ?? {};
 
+  useEffect(() => {
+    if (state.success) onSuccess?.();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state.success]);
+
   return (
-    <form action={formAction} className="max-w-2xl space-y-6">
+    <form action={formAction} className="space-y-5">
       {product && <input type="hidden" name="productId" value={product.id} />}
       <input type="hidden" name="type" value={type} />
+      <input type="hidden" name="currency" value={currency} />
 
-      {state.error && <p className="text-sm text-red-600">{state.error}</p>}
+      {state.error && (
+        <p className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-600">
+          {state.error}
+        </p>
+      )}
 
-      <Field label="Product type">
-        <select
-          value={type}
-          disabled={!!product}
-          onChange={(e) => setType(e.target.value as ProductType)}
-          className={inputClass}
-        >
-          <option value="vehicle">Vehicle</option>
-          <option value="spare_part">Spare part</option>
-        </select>
-      </Field>
+      <SelectField
+        label="Product type"
+        value={type}
+        disabled={!!product}
+        onChange={(e) => setType(e.target.value as ProductType)}
+      >
+        <option value="vehicle">Vehicle</option>
+        <option value="spare_part">Spare part</option>
+      </SelectField>
 
-      <FormField
-        label="Title"
-        name="title"
-        defaultValue={product?.title}
-        required
-        errors={errors.title}
-      />
-      <div className="space-y-1">
-        <label className={labelClass}>Description</label>
-        <textarea
-          name="description"
-          defaultValue={product?.description}
-          rows={4}
-          required
-          className={inputClass}
-        />
-        {errors.description?.map((m) => (
-          <p key={m} className="text-xs text-red-600">
-            {m}
-          </p>
-        ))}
-      </div>
-
-      <div className="grid grid-cols-2 gap-4">
+      <FormSection title="Basic information">
         <FormField
-          label="Price"
-          name="price"
-          type="number"
-          step="0.01"
-          defaultValue={product?.price}
+          label="Title"
+          name="title"
+          defaultValue={product?.title}
           required
-          errors={errors.price}
+          errors={errors.title}
         />
-        <Field label="Currency">
-          <select name="currency" defaultValue={product?.currency ?? "RWF"} className={inputClass}>
-            <option value="RWF">RWF</option>
-            <option value="USD">USD</option>
-          </select>
-        </Field>
-      </div>
-
-      <FormField
-        label="Image URLs (comma-separated)"
-        name="images"
-        defaultValue={product?.images.join(", ")}
-        errors={errors.images}
-      />
-
-      <Field label="Seller" errors={errors.sellerId}>
-        <select name="sellerId" defaultValue={product?.seller.id} required className={inputClass}>
+        <div className="space-y-1">
+          <label className="block text-sm font-medium text-black">Description</label>
+          <textarea
+            name="description"
+            defaultValue={product?.description}
+            rows={4}
+            required
+            className="w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm focus:border-accent focus:outline-none"
+          />
+          {errors.description?.map((m) => (
+            <p key={m} className="text-xs text-red-600">
+              {m}
+            </p>
+          ))}
+        </div>
+        <SelectField label="Seller" name="sellerId" defaultValue={product?.seller.id} required errors={errors.sellerId}>
           <option value="">Choose a seller</option>
           {sellers.map((s) => (
             <option key={s.id} value={s.id}>
               {s.name}
             </option>
           ))}
-        </select>
-      </Field>
+        </SelectField>
+      </FormSection>
 
-      <div className="grid grid-cols-2 gap-4">
-        <Field label="Availability">
-          <select
+      <FormSection title="Pricing" description="Set the listing price and preferred currency.">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <FormField
+            label="Price"
+            name="price"
+            type="number"
+            step="0.01"
+            defaultValue={product?.price}
+            required
+            errors={errors.price}
+          />
+          <div className="space-y-1">
+            <span className="block text-sm font-medium text-black">Preferred currency</span>
+            <IconSelect
+              value={currency}
+              onChange={setCurrency}
+              ariaLabel="Preferred currency"
+              options={currencies.map((c) => ({
+                value: c,
+                label: c,
+                icon: <Flag code={currencyFlags[c]} />,
+              }))}
+            />
+          </div>
+        </div>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <SelectField
+            label="Availability"
             name="availability"
             defaultValue={product?.availability ?? "available"}
-            className={inputClass}
           >
             <option value="available">Available</option>
             <option value="reserved">Reserved</option>
             <option value="sold">Sold</option>
             <option value="out_of_stock">Out of stock</option>
-          </select>
-        </Field>
-        <Field label="Condition">
-          <select
-            name="condition"
-            defaultValue={product?.condition ?? "used"}
-            className={inputClass}
-          >
+          </SelectField>
+          <SelectField label="Condition" name="condition" defaultValue={product?.condition ?? "used"}>
             <option value="new">New</option>
             <option value="used">Used</option>
             <option value="certified_pre_owned">Certified pre-owned</option>
-          </select>
-        </Field>
-      </div>
+          </SelectField>
+        </div>
+        <Checkbox name="featured" label="Featured listing" defaultChecked={product?.featured} />
+      </FormSection>
 
-      <label className="flex items-center gap-2 text-sm text-black">
-        <input type="checkbox" name="featured" defaultChecked={product?.featured} />
-        Featured
-      </label>
+      <FormSection title="Photos" description="Upload images from your computer.">
+        <ImageUploadField
+          name="images"
+          label="Product photos"
+          defaultValue={product?.images.join(", ")}
+          multiple
+          errors={errors.images}
+        />
+      </FormSection>
 
       {type === "vehicle" ? (
         <>
-          <div className="grid grid-cols-2 gap-4">
-            <FormField
-              label="Make"
-              name="make"
-              defaultValue={product?.type === "vehicle" ? product.make : ""}
-              required
-            />
-            <FormField
-              label="Model"
-              name="model"
-              defaultValue={product?.type === "vehicle" ? product.model : ""}
-              required
-            />
-          </div>
-          <div className="grid grid-cols-2 gap-4">
-            <FormField
-              label="Generation (optional)"
-              name="generation"
-              defaultValue={product?.type === "vehicle" ? product.generation : ""}
-            />
-            <FormField
-              label="Trim (optional)"
-              name="trim"
-              defaultValue={product?.type === "vehicle" ? product.trim : ""}
-            />
-          </div>
-          <div className="grid grid-cols-2 gap-4">
-            <FormField
-              label="Year"
-              name="year"
-              type="number"
-              defaultValue={product?.type === "vehicle" ? product.year : undefined}
-              required
-            />
-            <FormField
-              label="Mileage (km)"
-              name="mileageKm"
-              type="number"
-              defaultValue={product?.type === "vehicle" ? product.mileageKm : undefined}
-              required
-            />
-          </div>
-          <div className="grid grid-cols-3 gap-4">
-            <Field label="Fuel">
-              <select
+          <FormSection title="Vehicle details">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <FormField
+                label="Make"
+                name="make"
+                defaultValue={product?.type === "vehicle" ? product.make : ""}
+                required
+              />
+              <FormField
+                label="Model"
+                name="model"
+                defaultValue={product?.type === "vehicle" ? product.model : ""}
+                required
+              />
+            </div>
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <FormField
+                label="Generation (optional)"
+                name="generation"
+                defaultValue={product?.type === "vehicle" ? product.generation : ""}
+              />
+              <FormField
+                label="Trim (optional)"
+                name="trim"
+                defaultValue={product?.type === "vehicle" ? product.trim : ""}
+              />
+            </div>
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <FormField
+                label="Year"
+                name="year"
+                type="number"
+                defaultValue={product?.type === "vehicle" ? product.year : undefined}
+                required
+              />
+              <FormField
+                label="Mileage (km)"
+                name="mileageKm"
+                type="number"
+                defaultValue={product?.type === "vehicle" ? product.mileageKm : undefined}
+                required
+              />
+            </div>
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+              <SelectField
+                label="Fuel"
                 name="fuel"
                 defaultValue={product?.type === "vehicle" ? product.fuel : "petrol"}
-                className={inputClass}
               >
                 <option value="petrol">Petrol</option>
                 <option value="diesel">Diesel</option>
                 <option value="hybrid">Hybrid</option>
                 <option value="electric">Electric</option>
-              </select>
-            </Field>
-            <Field label="Transmission">
-              <select
+              </SelectField>
+              <SelectField
+                label="Transmission"
                 name="transmission"
                 defaultValue={product?.type === "vehicle" ? product.transmission : "manual"}
-                className={inputClass}
               >
                 <option value="manual">Manual</option>
                 <option value="automatic">Automatic</option>
-              </select>
-            </Field>
-            <Field label="Drive type">
-              <select
+              </SelectField>
+              <SelectField
+                label="Drive type"
                 name="driveType"
                 defaultValue={product?.type === "vehicle" ? product.driveType : "fwd"}
-                className={inputClass}
               >
                 <option value="fwd">FWD</option>
                 <option value="rwd">RWD</option>
                 <option value="awd">AWD</option>
                 <option value="4wd">4WD</option>
-              </select>
-            </Field>
-          </div>
-          <div className="grid grid-cols-2 gap-4">
-            <FormField
-              label="Engine capacity (L)"
-              name="engineCapacityL"
-              type="number"
-              step="0.1"
-              defaultValue={product?.type === "vehicle" ? product.engineCapacityL : undefined}
-              required
-            />
-            <Field label="Body type">
-              <select
+              </SelectField>
+            </div>
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <FormField
+                label="Engine capacity (L)"
+                name="engineCapacityL"
+                type="number"
+                step="0.1"
+                defaultValue={product?.type === "vehicle" ? product.engineCapacityL : undefined}
+                required
+              />
+              <SelectField
+                label="Body type"
                 name="bodyType"
                 defaultValue={product?.type === "vehicle" ? product.bodyType : "sedan"}
-                className={inputClass}
               >
                 {["sedan", "suv", "hatchback", "pickup", "van", "coupe", "wagon", "minibus"].map(
                   (bt) => (
@@ -265,52 +276,47 @@ export function ProductForm({
                     </option>
                   ),
                 )}
-              </select>
-            </Field>
-          </div>
-          <div className="grid grid-cols-2 gap-4">
+              </SelectField>
+            </div>
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <FormField
+                label="Color"
+                name="color"
+                defaultValue={product?.type === "vehicle" ? product.color : ""}
+                required
+              />
+              <FormField
+                label="Location"
+                name="location"
+                defaultValue={product?.type === "vehicle" ? product.location : ""}
+                required
+              />
+            </div>
             <FormField
-              label="Color"
-              name="color"
-              defaultValue={product?.type === "vehicle" ? product.color : ""}
-              required
+              label="Features (comma-separated)"
+              name="features"
+              defaultValue={product?.type === "vehicle" ? product.features.join(", ") : ""}
             />
-            <FormField
-              label="Location"
-              name="location"
-              defaultValue={product?.type === "vehicle" ? product.location : ""}
-              required
-            />
-          </div>
-          <FormField
-            label="Features (comma-separated)"
-            name="features"
-            defaultValue={product?.type === "vehicle" ? product.features.join(", ") : ""}
-          />
-          <label className="flex items-center gap-2 text-sm text-black">
-            <input
-              type="checkbox"
+            <Checkbox
               name="negotiable"
+              label="Price negotiable"
               defaultChecked={product?.type === "vehicle" ? product.negotiable : false}
             />
-            Negotiable
-          </label>
+          </FormSection>
 
-          <div className="rounded-md border border-zinc-200 p-3">
-            <Field label="Listing type">
-              <select
-                name="listingType"
-                value={listingType}
-                onChange={(e) => setListingType(e.target.value)}
-                className={inputClass}
-              >
-                <option value="sale">For sale</option>
-                <option value="rent">For rent</option>
-                <option value="both">For sale & rent</option>
-              </select>
-            </Field>
+          <FormSection title="Rental options">
+            <SelectField
+              label="Listing type"
+              name="listingType"
+              value={listingType}
+              onChange={(e) => setListingType(e.target.value)}
+            >
+              <option value="sale">For sale</option>
+              <option value="rent">For rent</option>
+              <option value="both">For sale &amp; rent</option>
+            </SelectField>
             {listingType !== "sale" && (
-              <div className="mt-3 grid grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
                 {listingType === "both" && (
                   <FormField
                     label="Daily rental rate"
@@ -337,17 +343,17 @@ export function ProductForm({
                 />
               </div>
             )}
-          </div>
+          </FormSection>
         </>
       ) : (
-        <>
+        <FormSection title="Spare part details">
           <FormField
             label="Part name"
             name="partName"
             defaultValue={product?.type === "spare_part" ? product.partName : ""}
             required
           />
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <FormField
               label="Part number"
               name="partNumber"
@@ -361,7 +367,7 @@ export function ProductForm({
               required
             />
           </div>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <FormField
               label="Category"
               name="category"
@@ -390,7 +396,7 @@ export function ProductForm({
               product?.type === "spare_part" ? product.compatibleModels.join(", ") : ""
             }
           />
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <FormField
               label="Compatible from year"
               name="compatibleYearFrom"
@@ -419,7 +425,7 @@ export function ProductForm({
             type="number"
             defaultValue={product?.type === "spare_part" ? product.warrantyMonths : undefined}
           />
-        </>
+        </FormSection>
       )}
 
       <SubmitButton>{product ? "Save changes" : "Create product"}</SubmitButton>

@@ -8,23 +8,33 @@ import { createSellerAction, type CreateSellerState } from "@/features/admin/act
 
 const initialState: CreateSellerState = { success: false };
 
-export function CreateSellerForm() {
+export function CreateSellerForm({ onCreated }: { onCreated?: () => void }) {
   const [state, formAction] = useActionState(createSellerAction, initialState);
   const router = useRouter();
 
   useEffect(() => {
-    if (state.success) router.refresh();
-  }, [state.success, router]);
+    if (state.success) {
+      router.refresh();
+      onCreated?.();
+    }
+  }, [state.success, router, onCreated]);
 
   return (
-    <form action={formAction} className="max-w-md space-y-3 rounded-md border border-zinc-200 bg-white p-4">
-      <h2 className="text-sm font-semibold text-black">New seller</h2>
-      {state.error && <p className="text-sm text-red-600">{state.error}</p>}
+    <form action={formAction} className="space-y-4">
+      {state.error && (
+        <p className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-600">
+          {state.error}
+        </p>
+      )}
       <FormField label="Name" name="name" required errors={state.fieldErrors?.name} />
       <FormField label="Location" name="location" required errors={state.fieldErrors?.location} />
       <FormField label="WhatsApp number" name="whatsapp" required errors={state.fieldErrors?.whatsapp} />
-      <label className="flex items-center gap-2 text-sm text-black">
-        <input type="checkbox" name="verified" />
+      <label className="flex items-center gap-2 text-sm font-medium text-black">
+        <input
+          type="checkbox"
+          name="verified"
+          className="h-4 w-4 rounded border-zinc-300 text-accent focus:ring-accent"
+        />
         Verified
       </label>
       <SubmitButton>Create seller</SubmitButton>

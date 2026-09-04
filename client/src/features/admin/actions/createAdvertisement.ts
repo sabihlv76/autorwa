@@ -1,6 +1,5 @@
 "use server";
 
-import { redirect } from "next/navigation";
 import { requireAdminAction } from "@/lib/auth/requireAdmin";
 import { advertisementFormSchema } from "@/lib/validation/advertisement";
 import * as advertisementRepository from "@/repositories/advertisementRepository";
@@ -37,5 +36,5 @@ export async function createAdvertisementAction(
     metadata: { title: ad.title, position: ad.position },
   });
 
-  redirect("/ops-console/advertisements");
+  return { success: true };
 }
