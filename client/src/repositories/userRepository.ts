@@ -7,9 +7,11 @@ interface UserDoc {
   _id: { toString(): string };
   name: string;
   email: string;
-  passwordHash: string;
+  passwordHash?: string;
+  image?: string;
   role: Role;
   accountStatus: PublicUser["accountStatus"];
+  createdAt: Date;
 }
 
 function toPublicUser(doc: UserDoc): PublicUser {
@@ -19,6 +21,8 @@ function toPublicUser(doc: UserDoc): PublicUser {
     email: doc.email,
     role: doc.role,
     accountStatus: doc.accountStatus,
+    image: doc.image,
+    createdAt: new Date(doc.createdAt).toISOString(),
   };
 }
 
@@ -59,6 +63,34 @@ export async function createCustomer({
   return toPublicUser(doc as unknown as UserDoc);
 }
 
+export async function createFromGoogle({
+  name,
+  email,
+  image,
+}: {
+  name: string;
+  email: string;
+  image?: string;
+}): Promise<PublicUser> {
+  await connectToDatabase();
+  const doc = await UserModel.create({
+    name,
+    email: email.toLowerCase(),
+    image,
+    role: "customer",
+    emailVerified: true,
+  });
+  return toPublicUser(doc as unknown as UserDoc);
+}
+
+export async function updateProfile(
+  id: string,
+  updates: { name?: string; image?: string },
+): Promise<void> {
+  await connectToDatabase();
+  await UserModel.updateOne({ _id: id }, { $set: updates });
+}
+
 export async function updateLastLogin(id: string): Promise<void> {
   await connectToDatabase();
   await UserModel.updateOne({ _id: id }, { $set: { lastLoginAt: new Date() } });
@@ -81,9 +113,7 @@ export interface UserSummary {
   createdAt: string;
 }
 
-interface UserSummaryDoc extends UserDoc {
-  createdAt: Date;
-}
+type UserSummaryDoc = UserDoc;
 
 function toSummary(doc: UserSummaryDoc): UserSummary {
   return {

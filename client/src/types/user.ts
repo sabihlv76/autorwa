@@ -14,8 +14,10 @@ export interface PublicUser {
   email: string;
   role: Role;
   accountStatus: AccountStatus;
+  image?: string;
+  createdAt: string;
 }
 
 export interface UserWithPasswordHash extends PublicUser {
-  passwordHash: string;
+  passwordHash?: string;
 }

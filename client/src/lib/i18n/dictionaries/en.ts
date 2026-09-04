@@ -248,6 +248,19 @@ const en = {
     passwordResetSuccess: "Your password has been reset. You can now sign in.",
     backToSignIn: "Back to sign in",
   },
+  account: {
+    title: "My account",
+    details: "Account details",
+    role: "Role",
+    accountStatus: "Account status",
+    memberSince: "Member since",
+    uploadPhoto: "Upload photo",
+    changePhoto: "Change photo",
+    changePassword: "Change password",
+    setPassword: "Set password",
+    currentPassword: "Current password",
+    passwordUpdated: "Your password has been updated.",
+  },
 };
 
 export default en;

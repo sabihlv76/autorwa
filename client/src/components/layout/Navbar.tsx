@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import { signOut, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { useLocale } from "@/components/providers/LocaleProvider";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import { CurrencySwitcher } from "./CurrencySwitcher";
@@ -87,15 +87,14 @@ function AccountMenu({ compact = false }: { compact?: boolean }) {
 
   if (status === "authenticated") {
     return (
-      <button
-        type="button"
-        onClick={() => signOut({ callbackUrl: "/" })}
-        title={dictionary.auth.signOut}
+      <Link
+        href="/account"
+        title={dictionary.account.title}
         className="flex items-center gap-1.5 rounded-md px-2 py-1.5 text-accent-dark hover:bg-zinc-100"
       >
         <ProfileIcon filled />
         <span className={labelClass}>{session.user.name}</span>
-      </button>
+      </Link>
     );
   }
 

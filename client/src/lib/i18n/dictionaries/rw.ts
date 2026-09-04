@@ -250,6 +250,19 @@ const rw: Dictionary = {
     passwordResetSuccess: "Ijambo ry'ibanga ryahinduwe. Ushobora kwinjira ubu.",
     backToSignIn: "Subira ku kwinjira",
   },
+  account: {
+    title: "Konti yanjye",
+    details: "Amakuru ya konti",
+    role: "Uruhare",
+    accountStatus: "Uko konti ihagaze",
+    memberSince: "Yinjiye kuva",
+    uploadPhoto: "Ohereza ifoto",
+    changePhoto: "Hindura ifoto",
+    changePassword: "Hindura ijambo ry'ibanga",
+    setPassword: "Shyiraho ijambo ry'ibanga",
+    currentPassword: "Ijambo ry'ibanga risanzwe",
+    passwordUpdated: "Ijambo ry'ibanga ryawe ryahinduwe.",
+  },
 };
 
 export default rw;

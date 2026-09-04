@@ -250,6 +250,19 @@ const sw: Dictionary = {
     passwordResetSuccess: "Nenosiri lako limewekwa upya. Sasa unaweza kuingia.",
     backToSignIn: "Rudi kuingia",
   },
+  account: {
+    title: "Akaunti yangu",
+    details: "Maelezo ya akaunti",
+    role: "Wajibu",
+    accountStatus: "Hali ya akaunti",
+    memberSince: "Mwanachama tangu",
+    uploadPhoto: "Pakia picha",
+    changePhoto: "Badilisha picha",
+    changePassword: "Badilisha nenosiri",
+    setPassword: "Weka nenosiri",
+    currentPassword: "Nenosiri la sasa",
+    passwordUpdated: "Nenosiri lako limesasishwa.",
+  },
 };
 
 export default sw;

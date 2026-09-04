@@ -11,7 +11,8 @@ const userSchema = new Schema(
       trim: true,
       index: true,
     },
-    passwordHash: { type: String, required: true },
+    passwordHash: { type: String },
+    image: { type: String },
     role: {
       type: String,
       enum: ["customer", "business", "admin", "moderator", "finance", "support"],

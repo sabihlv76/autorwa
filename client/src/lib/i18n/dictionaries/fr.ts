@@ -252,6 +252,19 @@ const fr: Dictionary = {
       "Votre mot de passe a été réinitialisé. Vous pouvez maintenant vous connecter.",
     backToSignIn: "Retour à la connexion",
   },
+  account: {
+    title: "Mon compte",
+    details: "Détails du compte",
+    role: "Rôle",
+    accountStatus: "Statut du compte",
+    memberSince: "Membre depuis",
+    uploadPhoto: "Ajouter une photo",
+    changePhoto: "Changer la photo",
+    changePassword: "Changer le mot de passe",
+    setPassword: "Définir un mot de passe",
+    currentPassword: "Mot de passe actuel",
+    passwordUpdated: "Votre mot de passe a été mis à jour.",
+  },
 };
 
 export default fr;

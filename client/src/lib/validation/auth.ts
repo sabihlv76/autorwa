@@ -35,7 +35,19 @@ export const resetPasswordSchema = z
     path: ["confirmPassword"],
   });
 
+export const changePasswordSchema = z
+  .object({
+    currentPassword: z.string().optional(),
+    newPassword: passwordField,
+    confirmNewPassword: passwordField,
+  })
+  .refine((data) => data.newPassword === data.confirmNewPassword, {
+    message: "Passwords do not match",
+    path: ["confirmNewPassword"],
+  });
+
 export type SignUpInput = z.infer<typeof signUpSchema>;
 export type SignInInput = z.infer<typeof signInSchema>;
 export type ForgotPasswordInput = z.infer<typeof forgotPasswordSchema>;
 export type ResetPasswordInput = z.infer<typeof resetPasswordSchema>;
+export type ChangePasswordInput = z.infer<typeof changePasswordSchema>;

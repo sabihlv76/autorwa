@@ -42,6 +42,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         const user = await userRepository.findByEmail(email);
         if (!user) return null;
         if (user.accountStatus !== "active") return null;
+        // Accounts created via Google sign-up have no password set.
+        if (!user.passwordHash) return null;
 
         const passwordMatches = await bcrypt.compare(password, user.passwordHash);
         if (!passwordMatches) return null;
@@ -60,26 +62,35 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   callbacks: {
     async signIn({ user, account }) {
       if (account?.provider !== "google") return true;
-      // The User schema requires a passwordHash, so there's no
-      // account-creation path for Google yet — only let it link to an
-      // email that already has a working password-based account.
       if (!user.email) return false;
+
       const existing = await userRepository.findByEmail(user.email);
-      return existing !== null && existing.accountStatus === "active";
+      if (existing) return existing.accountStatus === "active";
+
+      // First time this Google account has signed in — create a real
+      // account for it. Google has already verified the email address.
+      await userRepository.createFromGoogle({
+        name: user.name ?? user.email,
+        email: user.email,
+        image: user.image ?? undefined,
+      });
+      return true;
     },
     async jwt({ token, user, account }) {
       if (user) {
         if (account?.provider === "google" && user.email) {
           // Google's `user.id` is its own OAuth subject, not ours — signIn
-          // already confirmed a matching account exists, so look it up.
+          // already confirmed/created a matching account, so look it up.
           const appUser = await userRepository.findByEmail(user.email);
           if (appUser) {
             token.id = appUser.id;
             token.role = appUser.role;
+            token.image = appUser.image ?? null;
           }
         } else {
           token.id = user.id as string;
           token.role = user.role as Role;
+          token.image = user.image ?? null;
         }
       }
       return token;
@@ -88,6 +99,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       if (session.user) {
         session.user.id = token.id as string;
         session.user.role = token.role as Role;
+        session.user.image = token.image as string | null | undefined;
       }
       return session;
     },
