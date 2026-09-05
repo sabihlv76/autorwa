@@ -62,27 +62,43 @@ export function Hero({
   return (
     <section className="relative overflow-hidden border-b border-zinc-200 bg-gradient-to-b from-zinc-50 to-white">
       <AmbientBackground />
+      <div
+        aria-hidden="true"
+        className="animate-gradient-pan pointer-events-none absolute -top-24 left-1/2 h-[36rem] w-[36rem] -translate-x-1/2 rounded-full bg-gradient-to-br from-accent/25 via-purple-400/20 to-accent/25 opacity-50 blur-3xl"
+      />
       <div className="relative z-10 mx-auto grid max-w-7xl items-center gap-8 px-4 py-10 sm:px-6 lg:grid-cols-2 lg:gap-12 lg:px-8 lg:py-16">
         <div>
-          <span className="inline-flex items-center rounded-full bg-accent/10 px-3 py-1 text-xs font-semibold text-accent-dark">
+          <span
+            className="animate-fade-in-up inline-flex items-center rounded-full bg-accent/10 px-3 py-1 text-xs font-semibold text-accent-dark"
+            style={{ animationDelay: "0ms" }}
+          >
             🇷🇼 Autorwa
           </span>
-          <h1 className="mt-4 text-3xl font-extrabold tracking-tight text-black sm:text-4xl lg:text-5xl">
+          <h1
+            className="animate-fade-in-up mt-4 text-3xl font-extrabold tracking-tight text-black sm:text-4xl lg:text-5xl"
+            style={{ animationDelay: "80ms" }}
+          >
             {dictionary.common.homeTitle}
           </h1>
-          <p className="mt-4 max-w-lg text-base text-zinc-600">
+          <p
+            className="animate-fade-in-up mt-4 max-w-lg text-base text-zinc-600"
+            style={{ animationDelay: "160ms" }}
+          >
             {dictionary.common.homeSubtitle}
           </p>
-          <div className="mt-8 flex flex-wrap items-center gap-3">
+          <div
+            className="animate-fade-in-up mt-8 flex flex-wrap items-center gap-3"
+            style={{ animationDelay: "240ms" }}
+          >
             <Link
               href="/marketplace?type=vehicle"
-              className="rounded-md bg-accent px-5 py-2.5 text-sm font-semibold text-white hover:bg-accent-dark"
+              className="rounded-md bg-accent px-5 py-2.5 text-sm font-semibold text-white transition-transform hover:-translate-y-0.5 hover:bg-accent-dark"
             >
               {dictionary.home.browseCars}
             </Link>
             <Link
               href="/marketplace?type=spare_part"
-              className="rounded-md border border-zinc-300 bg-white px-5 py-2.5 text-sm font-semibold text-black hover:border-black"
+              className="rounded-md border border-zinc-300 bg-white px-5 py-2.5 text-sm font-semibold text-black transition-transform hover:-translate-y-0.5 hover:border-black"
             >
               {dictionary.home.browseSpareParts}
             </Link>
@@ -94,7 +110,10 @@ export function Hero({
             </Link>
           </div>
 
-          <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 border-t border-zinc-200 pt-5 text-sm text-zinc-600">
+          <div
+            className="animate-fade-in-up mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 border-t border-zinc-200 pt-5 text-sm text-zinc-600"
+            style={{ animationDelay: "320ms" }}
+          >
             <span className="font-semibold text-black">
               {dictionary.home.statsListings.replace("{count}", String(listingCount))}
             </span>

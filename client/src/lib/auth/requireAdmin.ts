@@ -1,15 +1,18 @@
 import { notFound } from "next/navigation";
 import { auth } from "./auth";
+import { hasAdminGateCookie } from "./adminGate";
 import type { Session } from "next-auth";
 
 /**
- * For Server Components/pages. A non-admin (or signed-out visitor) gets a
- * plain 404 — not a redirect to sign-in, which would reveal that a
- * protected admin area exists at this URL.
+ * For Server Components/pages. A non-admin (or signed-out visitor), or an
+ * admin session missing the secret-URL gate cookie, gets a plain 404 — not
+ * a redirect to sign-in, which would reveal that a protected admin area
+ * exists at this URL.
  */
 export async function requireAdminPage(): Promise<Session> {
   const session = await auth();
-  if (!session || session.user.role !== "admin") {
+  const gated = await hasAdminGateCookie();
+  if (!session || session.user.role !== "admin" || !gated) {
     notFound();
   }
   return session;
@@ -23,8 +26,21 @@ export async function requireAdminPage(): Promise<Session> {
  */
 export async function requireAdminAction(): Promise<Session | null> {
   const session = await auth();
-  if (!session || session.user.role !== "admin") {
+  const gated = await hasAdminGateCookie();
+  if (!session || session.user.role !== "admin" || !gated) {
     return null;
   }
   return session;
+}
+
+/**
+ * For the admin sign-in page only: checks just the gate cookie, not a full
+ * admin session — establishing that session is the whole point of the page
+ * this guards.
+ */
+export async function requireAdminGate(): Promise<void> {
+  const gated = await hasAdminGateCookie();
+  if (!gated) {
+    notFound();
+  }
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useLocale } from "@/components/providers/LocaleProvider";
 import { buildQueryString, parseFilters } from "@/features/products/lib/searchParams";
 import { CAR_MAKES } from "@/lib/carMakes";
@@ -35,15 +35,18 @@ export function FilterPanel({
   );
 
   // The panel keeps its own draft state so edits don't hit the URL until
-  // "Apply" is pressed — but that means it must be explicitly resynced
-  // whenever the URL changes from elsewhere (the Cars/Spare Parts tabs,
-  // a category pill, sort/pagination), or it keeps showing stale filters
-  // for the type/section the user just navigated away from.
+  // "Apply" is pressed — but that means it must be resynced whenever the
+  // URL changes from elsewhere (the Cars/Spare Parts tabs, a category
+  // pill, sort/pagination), or it keeps showing stale filters for the
+  // type/section the user just navigated away from. Adjusting state
+  // during render (React's documented pattern for this) rather than in a
+  // useEffect avoids an extra render pass on every navigation.
   const searchParamsKey = searchParams.toString();
-  useEffect(() => {
+  const [prevSearchParamsKey, setPrevSearchParamsKey] = useState(searchParamsKey);
+  if (searchParamsKey !== prevSearchParamsKey) {
+    setPrevSearchParamsKey(searchParamsKey);
     setFilters(parseFilters(currentParams));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchParamsKey]);
+  }
 
   function update<K extends keyof FilterState>(key: K, value: FilterState[K]) {
     setFilters((prev) => ({ ...prev, [key]: value }));

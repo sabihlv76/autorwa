@@ -164,7 +164,7 @@ const rw: Dictionary = {
     sparePartsTitle: "Ibice n'ibikoresho by'ibinyabiziga",
     homeTitle: "Imodoka n'ibice byazo ahantu hamwe",
     homeSubtitle:
-      "Reba ibicuruzwa byemejwe biva ku bacuruzi n'ibigo byizerwa mu Rwanda hose.",
+      "Reba ibicuruzwa byemejwe biva ku bacuruzi n'amaduka yizerwa mu Rwanda hose — gura cyangwa ukodeshe imodoka, ushake ibice by'imodoka nyakuri, kandi utumize uciye kuri WhatsApp, nta muhuza.",
   },
   home: {
     browseCars: "Reba imodoka",
@@ -238,6 +238,7 @@ const rw: Dictionary = {
     signUp: "Iyandikishe",
     signOut: "Sohoka",
     guest: "Umushyitsi",
+    guestMenuText: "Uri gushakisha nk'umushyitsi.",
     name: "Amazina",
     email: "Imeyili",
     password: "Ijambo ry'ibanga",

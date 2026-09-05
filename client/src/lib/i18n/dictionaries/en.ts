@@ -162,7 +162,7 @@ const en = {
     sparePartsTitle: "Vehicle Parts & Accessories",
     homeTitle: "Cars and spare parts, in one marketplace",
     homeSubtitle:
-      "Browse verified listings from trusted sellers and businesses across Rwanda.",
+      "Browse verified listings from trusted sellers and dealerships across Rwanda — buy or rent a car, find genuine spare parts, and order straight from the seller on WhatsApp, no middleman.",
   },
   home: {
     browseCars: "Browse Cars",
@@ -236,6 +236,7 @@ const en = {
     signUp: "Sign up",
     signOut: "Sign out",
     guest: "Guest",
+    guestMenuText: "You're browsing as a guest.",
     name: "Name",
     email: "Email",
     password: "Password",

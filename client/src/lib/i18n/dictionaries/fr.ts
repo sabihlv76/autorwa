@@ -164,7 +164,7 @@ const fr: Dictionary = {
     sparePartsTitle: "Pièces et accessoires automobiles",
     homeTitle: "Voitures et pièces détachées, dans un seul marché",
     homeSubtitle:
-      "Parcourez des annonces vérifiées de vendeurs et entreprises de confiance partout au Rwanda.",
+      "Parcourez des annonces vérifiées de vendeurs et concessionnaires de confiance partout au Rwanda — achetez ou louez une voiture, trouvez des pièces détachées authentiques, et commandez directement auprès du vendeur sur WhatsApp, sans intermédiaire.",
   },
   home: {
     browseCars: "Voir les voitures",
@@ -239,6 +239,7 @@ const fr: Dictionary = {
     signUp: "S'inscrire",
     signOut: "Se déconnecter",
     guest: "Invité",
+    guestMenuText: "Vous naviguez en tant qu'invité.",
     name: "Nom",
     email: "E-mail",
     password: "Mot de passe",

@@ -164,7 +164,7 @@ const sw: Dictionary = {
     sparePartsTitle: "Vipuri na Vifaa vya Gari",
     homeTitle: "Magari na vipuri, sokoni pamoja",
     homeSubtitle:
-      "Vinjari matangazo yaliyothibitishwa kutoka kwa wauzaji na biashara za kuaminika kote Rwanda.",
+      "Vinjari matangazo yaliyothibitishwa kutoka kwa wauzaji na wafanyabiashara wa kuaminika kote Rwanda — nunua au kodisha gari, pata vipuri halisi, na uagize moja kwa moja kutoka kwa muuzaji kupitia WhatsApp, bila mpatanishi.",
   },
   home: {
     browseCars: "Angalia Magari",
@@ -238,6 +238,7 @@ const sw: Dictionary = {
     signUp: "Jisajili",
     signOut: "Toka",
     guest: "Mgeni",
+    guestMenuText: "Unavinjari kama mgeni.",
     name: "Jina",
     email: "Barua pepe",
     password: "Nenosiri",

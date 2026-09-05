@@ -5,8 +5,9 @@ import Link from "next/link";
 import { useState } from "react";
 import { useSession } from "next-auth/react";
 import { useLocale } from "@/components/providers/LocaleProvider";
-import { LanguageSwitcher } from "./LanguageSwitcher";
 import { CurrencySwitcher } from "./CurrencySwitcher";
+import { GuestMenu } from "./GuestMenu";
+import { LanguageSwitcher } from "./LanguageSwitcher";
 
 // Shared with PopularTags, which renders an invisible logo of the exact
 // same size as a spacer so its row lines up under the search bar without
@@ -14,7 +15,7 @@ import { CurrencySwitcher } from "./CurrencySwitcher";
 // screens so the search box next to it still has room to breathe.
 export const NAVBAR_LOGO_CLASS = "h-10 w-auto sm:h-12 lg:h-14";
 
-function ProfileIcon({ filled }: { filled: boolean }) {
+export function ProfileIcon({ filled }: { filled: boolean }) {
   return (
     <svg
       viewBox="0 0 24 24"
@@ -98,16 +99,7 @@ function AccountMenu({ compact = false }: { compact?: boolean }) {
     );
   }
 
-  return (
-    <Link
-      href="/signup"
-      title={dictionary.auth.signUp}
-      className="flex items-center gap-1.5 rounded-md px-2 py-1.5 text-zinc-600 hover:bg-zinc-100"
-    >
-      <ProfileIcon filled={false} />
-      <span className={labelClass}>{dictionary.auth.guest}</span>
-    </Link>
-  );
+  return <GuestMenu compact={compact} />;
 }
 
 function CartLink({ cartItemCount }: { cartItemCount: number }) {
