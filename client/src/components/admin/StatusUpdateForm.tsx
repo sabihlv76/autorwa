@@ -12,7 +12,10 @@ export function StatusUpdateForm<TStatus extends string>({
   id: string;
   currentStatus: TStatus;
   statusOptions: TStatus[];
-  onUpdate: (id: string, status: TStatus) => Promise<{ success: boolean; error?: string }>;
+  onUpdate: (
+    id: string,
+    status: TStatus,
+  ) => Promise<{ success: boolean; error?: string; whatsappUrl?: string }>;
 }) {
   const router = useRouter();
   const [status, setStatus] = useState(currentStatus);
@@ -28,6 +31,12 @@ export function StatusUpdateForm<TStatus extends string>({
         setError(result.error ?? "Update failed.");
         setStatus(currentStatus);
       } else {
+        // Server Actions can't open tabs themselves — the admin gets a
+        // pre-filled WhatsApp message to review and send with one click
+        // (only returned for updates that warrant notifying the customer).
+        if (result.whatsappUrl) {
+          window.open(result.whatsappUrl, "_blank", "noopener,noreferrer");
+        }
         router.refresh();
       }
     });

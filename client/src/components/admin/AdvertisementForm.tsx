@@ -16,6 +16,16 @@ type FormAction = (
 
 const initialState: AdvertisementFormState = { success: false };
 
+// startDate/endDate are stored as Kigali-midnight instants (see
+// src/lib/validation/advertisement.ts), which can fall on a different UTC
+// calendar day — slicing the raw ISO string would show the wrong date back
+// in this picker, so shift by the fixed +2h Kigali offset first.
+const KIGALI_OFFSET_MS = 2 * 60 * 60 * 1000;
+function toKigaliDateInputValue(iso?: string): string | undefined {
+  if (!iso) return undefined;
+  return new Date(new Date(iso).getTime() + KIGALI_OFFSET_MS).toISOString().slice(0, 10);
+}
+
 export function AdvertisementForm({
   action,
   ad,
@@ -86,13 +96,13 @@ export function AdvertisementForm({
             label="Start date (optional)"
             name="startDate"
             type="date"
-            defaultValue={ad?.startDate?.slice(0, 10)}
+            defaultValue={toKigaliDateInputValue(ad?.startDate)}
           />
           <FormField
             label="End date (optional)"
             name="endDate"
             type="date"
-            defaultValue={ad?.endDate?.slice(0, 10)}
+            defaultValue={toKigaliDateInputValue(ad?.endDate)}
           />
         </div>
         <FormField

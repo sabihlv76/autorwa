@@ -4,7 +4,8 @@ import { auth } from "@/lib/auth/auth";
 import { getOrCreateCartOwnerKey } from "@/lib/cart/cartCookie";
 import { convert } from "@/lib/currency";
 import { confirmOrderSchema } from "@/lib/validation/cart";
-import { buildOrderMessage, buildWhatsAppUrl } from "@/features/cart/lib/orderMessage";
+import { buildWhatsAppUrl } from "@/lib/whatsapp";
+import { buildOrderMessage } from "@/features/cart/lib/orderMessage";
 import * as cartRepository from "@/repositories/cartRepository";
 import * as whatsappOrderRepository from "@/repositories/whatsappOrderRepository";
 

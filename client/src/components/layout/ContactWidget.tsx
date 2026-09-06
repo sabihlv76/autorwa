@@ -23,6 +23,11 @@ function PhoneIcon() {
   );
 }
 
+// Two independent floating buttons rather than one opaque card — a solid
+// card that size was blocking storefront content behind it, and the user
+// asked for the WhatsApp/Call actions visually separated, not grouped.
+// Semi-transparent + backdrop-blur so whatever's behind them still reads
+// through instead of being fully hidden.
 export function ContactWidget() {
   const { dictionary } = useLocale();
   const whatsappRaw = process.env.NEXT_PUBLIC_SUPPORT_WHATSAPP;
@@ -34,36 +39,29 @@ export function ContactWidget() {
   const phoneDigits = phoneRaw?.replace(/\D/g, "");
 
   return (
-    <div className="fixed bottom-4 right-4 z-40 w-56 overflow-hidden rounded-xl border border-zinc-200 bg-white shadow-lg">
-      <div className="border-b border-zinc-100 px-3 py-2 text-xs font-semibold text-zinc-500">
-        {dictionary.contact.title}
-      </div>
-      <div className="flex flex-col divide-y divide-zinc-100">
-        {whatsappDigits && (
-          <a
-            href={`https://wa.me/${whatsappDigits}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-2.5 px-3 py-2.5 text-sm font-medium text-black hover:bg-zinc-50"
-          >
-            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#25D366]/15 text-[#25D366]">
-              <WhatsAppIcon />
-            </span>
-            {dictionary.specs.chatOnWhatsApp}
-          </a>
-        )}
-        {phoneDigits && (
-          <a
-            href={`tel:+${phoneDigits}`}
-            className="flex items-center gap-2.5 px-3 py-2.5 text-sm font-medium text-black hover:bg-zinc-50"
-          >
-            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-accent/10 text-accent-dark">
-              <PhoneIcon />
-            </span>
-            {dictionary.contact.callUs}
-          </a>
-        )}
-      </div>
+    <div className="fixed bottom-4 right-4 z-40 flex flex-col items-end gap-3">
+      {whatsappDigits && (
+        <a
+          href={`https://wa.me/${whatsappDigits}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          title={dictionary.specs.chatOnWhatsApp}
+          aria-label={dictionary.specs.chatOnWhatsApp}
+          className="flex h-12 w-12 items-center justify-center rounded-full bg-[#25D366]/80 text-white shadow-lg backdrop-blur-sm transition-colors hover:bg-[#25D366]"
+        >
+          <WhatsAppIcon />
+        </a>
+      )}
+      {phoneDigits && (
+        <a
+          href={`tel:+${phoneDigits}`}
+          title={dictionary.contact.callUs}
+          aria-label={dictionary.contact.callUs}
+          className="flex h-12 w-12 items-center justify-center rounded-full bg-accent/80 text-white shadow-lg backdrop-blur-sm transition-colors hover:bg-accent-dark"
+        >
+          <PhoneIcon />
+        </a>
+      )}
     </div>
   );
 }

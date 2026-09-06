@@ -135,7 +135,12 @@ export async function findMany({
 export async function updateStatus(
   id: string,
   status: CallBookingStatus,
-): Promise<void> {
+): Promise<CallBookingSummary | null> {
   await connectToDatabase();
-  await CallBookingModel.updateOne({ _id: id }, { $set: { status } });
+  const doc = await CallBookingModel.findOneAndUpdate(
+    { _id: id },
+    { $set: { status } },
+    { returnDocument: "after" },
+  ).lean<CallBookingDoc | null>();
+  return doc ? toSummary(doc) : null;
 }

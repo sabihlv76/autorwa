@@ -47,7 +47,3 @@ export function buildOrderMessage({
 
   return lines.join("\n");
 }
-
-export function buildWhatsAppUrl(phoneDigitsOnly: string, message: string): string {
-  return `https://wa.me/${phoneDigitsOnly}?text=${encodeURIComponent(message)}`;
-}

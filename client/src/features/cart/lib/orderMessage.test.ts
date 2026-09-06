@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { buildOrderMessage, buildWhatsAppUrl } from "./orderMessage";
+import { buildOrderMessage } from "./orderMessage";
 
 describe("buildOrderMessage", () => {
   const base = {
@@ -63,12 +63,5 @@ describe("buildOrderMessage", () => {
       items: [{ title: "Brake Pads", quantity: 1, priceSnapshot: 45 }],
     });
     expect(withoutNotes).not.toContain("Customer Notes:");
-  });
-});
-
-describe("buildWhatsAppUrl", () => {
-  it("builds a wa.me URL with the URL-encoded message", () => {
-    const url = buildWhatsAppUrl("250788100001", "Hello there");
-    expect(url).toBe("https://wa.me/250788100001?text=Hello%20there");
   });
 });
