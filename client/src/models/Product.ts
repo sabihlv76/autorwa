@@ -78,6 +78,16 @@ const vehicleSchema = new Schema({
   },
   color: { type: String, required: true },
   location: { type: String, required: true, index: true },
+  // Whether the car is already in-country and viewable now, or still
+  // incoming (e.g. a China/import order in transit). Vehicles created
+  // before this field existed won't have it until they're next saved
+  // (same pattern as Seller.enterprise/rating) — stays optional here even
+  // though the admin form always requires a real selection going forward.
+  stockLocation: {
+    type: String,
+    enum: ["in_country", "incoming"],
+    index: true,
+  },
   features: { type: [String], default: [] },
   negotiable: { type: Boolean, default: false },
   listingType: {

@@ -307,6 +307,16 @@ export function ProductForm({
                 required
               />
             </div>
+            <SelectField
+              label="Stock location"
+              name="stockLocation"
+              defaultValue={
+                (product?.type === "vehicle" ? product.stockLocation : undefined) ?? "in_country"
+              }
+            >
+              <option value="in_country">In country</option>
+              <option value="incoming">Incoming (to be shipped)</option>
+            </SelectField>
             <FormField
               label="Features (comma-separated)"
               name="features"

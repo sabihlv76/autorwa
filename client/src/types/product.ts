@@ -22,6 +22,8 @@ export type BodyType =
 
 export type ListingType = "sale" | "rent" | "both";
 
+export type StockLocation = "in_country" | "incoming";
+
 export interface Seller {
   id: string;
   name: string;
@@ -63,6 +65,9 @@ export interface Vehicle extends ProductBase {
   bodyType: BodyType;
   color: string;
   location: string;
+  /** Absent on vehicles created before this field existed, until they're
+   * next saved — same pattern as Seller.enterprise/rating. */
+  stockLocation?: StockLocation;
   features: string[];
   negotiable: boolean;
   listingType: ListingType;

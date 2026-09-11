@@ -25,6 +25,7 @@ const validVehicle = {
   bodyType: "suv",
   color: "White",
   location: "Kigali",
+  stockLocation: "in_country",
   features: "Reverse camera, Bluetooth",
   negotiable: "on",
   listingType: "sale",

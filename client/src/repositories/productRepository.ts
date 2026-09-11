@@ -14,6 +14,7 @@ import type {
   Product,
   Seller,
   SortOption,
+  StockLocation,
   TransmissionType,
 } from "@/types/product";
 
@@ -48,6 +49,7 @@ interface VehicleDoc extends ProductDocBase {
   bodyType: BodyType;
   color: string;
   location: string;
+  stockLocation?: StockLocation;
   features: string[];
   negotiable: boolean;
   listingType: ListingType;
@@ -105,6 +107,7 @@ function toProduct(doc: ProductDoc): Product {
       bodyType: doc.bodyType,
       color: doc.color,
       location: doc.location,
+      stockLocation: doc.stockLocation,
       features: doc.features ?? [],
       negotiable: doc.negotiable ?? false,
       listingType: doc.listingType ?? "sale",
@@ -364,6 +367,7 @@ export interface AdminVehicleInput extends AdminProductFieldsBase {
   bodyType: BodyType;
   color: string;
   location: string;
+  stockLocation: StockLocation;
   features: string[];
   negotiable: boolean;
   listingType: ListingType;

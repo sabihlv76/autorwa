@@ -87,6 +87,8 @@ const fr: Dictionary = {
     from: "À partir de",
     perDay: "/jour",
     forRentBadge: "À louer",
+    inCountry: "Disponible au pays",
+    incoming: "En cours d'importation",
     orRentFrom: "ou louez à partir de",
     yearsActive: "{count} ans",
   },

@@ -87,6 +87,8 @@ const sw: Dictionary = {
     from: "Kuanzia",
     perDay: "/siku",
     forRentBadge: "Kukodishwa",
+    inCountry: "Ipo nchini",
+    incoming: "Inakuja (uagizaji)",
     orRentFrom: "au kodisha kuanzia",
     yearsActive: "Miaka {count}",
   },

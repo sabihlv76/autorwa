@@ -85,6 +85,8 @@ const en = {
     from: "From",
     perDay: "/day",
     forRentBadge: "For Rent",
+    inCountry: "In Country",
+    incoming: "Incoming",
     orRentFrom: "or rent from",
     yearsActive: "{count} yrs",
   },

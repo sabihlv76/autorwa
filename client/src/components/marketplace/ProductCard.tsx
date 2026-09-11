@@ -25,6 +25,28 @@ const conditionStyles: Record<Product["condition"], string> = {
   certified_pre_owned: "bg-zinc-700 text-white",
 };
 
+function LocationPinIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" className="h-3 w-3">
+      <path
+        d="M12 21s7-6.1 7-11.5A7 7 0 0 0 5 9.5C5 14.9 12 21 12 21z"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinejoin="round"
+      />
+      <circle cx="12" cy="9.5" r="2.3" stroke="currentColor" strokeWidth="1.8" />
+    </svg>
+  );
+}
+
+function PlaneIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" className="h-3 w-3">
+      <path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-3 2v1.5l4-1 4 1V21l-3-2v-5.5z" />
+    </svg>
+  );
+}
+
 function yearsActive(createdAt?: string): number | null {
   if (!createdAt) return null;
   const years = Math.floor(
@@ -91,19 +113,35 @@ export function ProductCard({
             </span>
           )}
         </div>
-        {isUnavailable && (
-          <span
-            className={`absolute right-2 top-2 rounded px-1.5 py-0.5 text-[10px] font-semibold uppercase ${availabilityStyles[product.availability]}`}
-          >
-            {dictionary.product[
-              product.availability === "out_of_stock"
-                ? "outOfStock"
-                : product.availability === "reserved"
-                  ? "reserved"
-                  : "sold"
-            ]}
-          </span>
-        )}
+        <div className="absolute right-2 top-2 flex flex-col items-end gap-1">
+          {product.type === "vehicle" && product.stockLocation && (
+            <span
+              className={`inline-flex items-center gap-1 rounded-full border bg-white/90 px-2 py-1 text-[10px] font-semibold shadow-sm backdrop-blur-sm ${
+                product.stockLocation === "in_country"
+                  ? "border-green-600 text-green-700"
+                  : "border-amber-500 text-amber-600"
+              }`}
+            >
+              {product.stockLocation === "in_country" ? <LocationPinIcon /> : <PlaneIcon />}
+              {product.stockLocation === "in_country"
+                ? dictionary.product.inCountry
+                : dictionary.product.incoming}
+            </span>
+          )}
+          {isUnavailable && (
+            <span
+              className={`rounded px-1.5 py-0.5 text-[10px] font-semibold uppercase ${availabilityStyles[product.availability]}`}
+            >
+              {dictionary.product[
+                product.availability === "out_of_stock"
+                  ? "outOfStock"
+                  : product.availability === "reserved"
+                    ? "reserved"
+                    : "sold"
+              ]}
+            </span>
+          )}
+        </div>
         <span
           className={`absolute bottom-2 left-2 rounded px-1.5 py-0.5 text-[10px] font-semibold uppercase ${conditionStyles[product.condition]}`}
         >

@@ -41,6 +41,7 @@ function vehicleInput(overrides: Partial<AdminVehicleInput>, sellerId: string): 
     bodyType: "suv",
     color: "White",
     location: "Kigali",
+    stockLocation: "in_country",
     features: [],
     negotiable: true,
     listingType: "sale",

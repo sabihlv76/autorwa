@@ -63,6 +63,7 @@ export const vehicleFormSchema = z
     ]),
     color: z.string().trim().min(1),
     location: z.string().trim().min(1),
+    stockLocation: z.enum(["in_country", "incoming"]),
     features: z.preprocess(csvToArray, z.array(z.string())),
     negotiable: z.preprocess(checkboxToBoolean, z.boolean()),
     listingType: z.enum(["sale", "rent", "both"]),

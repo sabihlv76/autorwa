@@ -87,6 +87,8 @@ const rw: Dictionary = {
     from: "Guhera",
     perDay: "/umunsi",
     forRentBadge: "Gukodesha",
+    inCountry: "Iri mu gihugu",
+    incoming: "Iraza (itumijwe)",
     orRentFrom: "cyangwa ukodeshe uhereye kuri",
     yearsActive: "Imyaka {count}",
   },
