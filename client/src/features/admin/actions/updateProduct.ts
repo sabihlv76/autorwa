@@ -20,7 +20,15 @@ export async function updateProductAction(
   const parsed = parseProductForm(formData);
   if (!parsed.success) return parsed.state;
 
-  const updated = await productRepository.update(productId, parsed.data);
+  let updated;
+  try {
+    updated = await productRepository.update(productId, parsed.data);
+  } catch (err) {
+    return {
+      success: false,
+      error: err instanceof Error ? err.message : "Failed to update product.",
+    };
+  }
   if (!updated) {
     return { success: false, error: "Product not found." };
   }

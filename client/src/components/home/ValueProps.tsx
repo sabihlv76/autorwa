@@ -1,6 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
+import { SpeedLines } from "@/components/layout/SpeedLines";
 import { useLocale } from "@/components/providers/LocaleProvider";
 
 function ShieldCheckIcon() {
@@ -77,8 +78,9 @@ export function ValueProps() {
   const { dictionary } = useLocale();
 
   return (
-    <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+    <section className="relative mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+      <SpeedLines />
+      <div className="relative grid grid-cols-1 gap-4 sm:grid-cols-3">
         <ValueCard
           icon={<ShieldCheckIcon />}
           title={dictionary.home.valueProp1Title}

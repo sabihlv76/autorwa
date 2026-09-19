@@ -36,7 +36,7 @@ export function SearchByType({ counts }: { counts: Record<string, number> }) {
           <p className="mt-1 text-sm text-zinc-500">{dictionary.home.typesSubtitle}</p>
         </div>
 
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-8">
+        <div className="grid justify-center gap-3 grid-cols-[repeat(auto-fit,minmax(120px,150px))]">
           {types.map(({ bodyType, count }) => (
             <Link
               key={bodyType}

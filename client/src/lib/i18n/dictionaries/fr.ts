@@ -8,6 +8,8 @@ const fr: Dictionary = {
     spareParts: "Pièces détachées",
     rent: "Location",
     sellWithUs: "Vendre avec nous",
+    contact: "Contactez-nous",
+    terms: "Conditions générales",
     cart: "Panier",
     language: "Langue",
     currency: "Devise",
@@ -226,6 +228,14 @@ const fr: Dictionary = {
   contact: {
     title: "Besoin d'aide ?",
     callUs: "Appelez-nous",
+    pageTitle: "Contactez-nous",
+    pageSubtitle:
+      "Une question sur une annonce, une commande, ou envie de vendre avec nous ? Contactez-nous par l'un de ces moyens.",
+    emailUs: "Envoyez-nous un e-mail",
+    whatsappDesc: "Le moyen le plus rapide de nous joindre — discutez directement, sans attendre.",
+    callDesc: "Vous préférez en parler ? Appelez-nous.",
+    emailDesc: "Pour tout ce qui nécessite plus de détails ou des documents.",
+    sellCta: "Vous voulez vendre une voiture ou des pièces détachées ?",
   },
   tags: {
     title: "Populaire en ce moment",
@@ -234,6 +244,7 @@ const fr: Dictionary = {
     tagline: "La marketplace rwandaise des voitures et pièces détachées.",
     marketplaceHeading: "Marketplace",
     accountHeading: "Compte",
+    supportHeading: "Assistance",
     rightsReserved: "Tous droits réservés.",
   },
   auth: {

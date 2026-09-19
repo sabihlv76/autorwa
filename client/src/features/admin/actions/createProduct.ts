@@ -15,7 +15,15 @@ export async function createProductAction(
   const parsed = parseProductForm(formData);
   if (!parsed.success) return parsed.state;
 
-  const product = await productRepository.create(parsed.data);
+  let product;
+  try {
+    product = await productRepository.create(parsed.data);
+  } catch (err) {
+    return {
+      success: false,
+      error: err instanceof Error ? err.message : "Failed to create product.",
+    };
+  }
 
   await auditLogRepository.log({
     adminUserId: session.user.id,

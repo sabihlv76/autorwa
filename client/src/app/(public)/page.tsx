@@ -6,6 +6,7 @@ import { SearchByType } from "@/components/home/SearchByType";
 import { ValueProps } from "@/components/home/ValueProps";
 import { VehicleSection } from "@/components/home/VehicleSection";
 import { AdSlot } from "@/components/marketplace/AdSlot";
+import { ScrollReveal } from "@/components/layout/ScrollReveal";
 import { auth } from "@/lib/auth/auth";
 import * as advertisementRepository from "@/repositories/advertisementRepository";
 import * as favoriteRepository from "@/repositories/favoriteRepository";
@@ -76,21 +77,31 @@ export default async function HomePage() {
         </div>
       </div>
 
-      <SearchByMake counts={makeCounts} />
-      <SearchByType counts={bodyTypeCounts} />
-      <VehicleSection
-        variant="featured"
-        viewAllHref="/marketplace?type=vehicle"
-        products={featuredVehicles}
-        favoritedProductIds={favoritedProductIds}
-      />
-      <VehicleSection
-        variant="latest"
-        viewAllHref="/marketplace?type=vehicle&sort=newest"
-        products={latestVehicles}
-        favoritedProductIds={favoritedProductIds}
-      />
-      <ValueProps />
+      <ScrollReveal>
+        <SearchByMake counts={makeCounts} />
+      </ScrollReveal>
+      <ScrollReveal>
+        <SearchByType counts={bodyTypeCounts} />
+      </ScrollReveal>
+      <ScrollReveal>
+        <VehicleSection
+          variant="featured"
+          viewAllHref="/marketplace?type=vehicle"
+          products={featuredVehicles}
+          favoritedProductIds={favoritedProductIds}
+        />
+      </ScrollReveal>
+      <ScrollReveal>
+        <VehicleSection
+          variant="latest"
+          viewAllHref="/marketplace?type=vehicle&sort=newest"
+          products={latestVehicles}
+          favoritedProductIds={favoritedProductIds}
+        />
+      </ScrollReveal>
+      <ScrollReveal>
+        <ValueProps />
+      </ScrollReveal>
     </div>
   );
 }

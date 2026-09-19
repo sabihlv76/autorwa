@@ -8,6 +8,8 @@ const sw: Dictionary = {
     spareParts: "Vipuri",
     rent: "Kukodisha",
     sellWithUs: "Uza Nasi",
+    contact: "Wasiliana Nasi",
+    terms: "Sheria na Masharti",
     cart: "Kikapu",
     language: "Lugha",
     currency: "Sarafu",
@@ -225,6 +227,14 @@ const sw: Dictionary = {
   contact: {
     title: "Unahitaji msaada?",
     callUs: "Tupigie simu",
+    pageTitle: "Wasiliana Nasi",
+    pageSubtitle:
+      "Una swali kuhusu tangazo, agizo, au unataka kuuza nasi? Wasiliana nasi kwa njia yoyote hapa chini.",
+    emailUs: "Tutumie barua pepe",
+    whatsappDesc: "Njia ya haraka zaidi ya kutufikia — zungumza moja kwa moja, bila kusubiri.",
+    callDesc: "Unapendelea kuongea? Tupigie simu.",
+    emailDesc: "Kwa jambo lolote linalohitaji maelezo zaidi au hati.",
+    sellCta: "Unataka kuuza gari au vipuri?",
   },
   tags: {
     title: "Maarufu sasa",
@@ -233,6 +243,7 @@ const sw: Dictionary = {
     tagline: "Soko la Rwanda la magari na vipuri.",
     marketplaceHeading: "Soko",
     accountHeading: "Akaunti",
+    supportHeading: "Msaada",
     rightsReserved: "Haki zote zimehifadhiwa.",
   },
   auth: {

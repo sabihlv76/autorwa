@@ -6,6 +6,8 @@ const en = {
     spareParts: "Spare Parts",
     rent: "Rent",
     sellWithUs: "Sell With Us",
+    contact: "Contact Us",
+    terms: "Terms & Conditions",
     cart: "Cart",
     language: "Language",
     currency: "Currency",
@@ -223,6 +225,14 @@ const en = {
   contact: {
     title: "Need help?",
     callUs: "Call us",
+    pageTitle: "Contact Us",
+    pageSubtitle:
+      "Have a question about a listing, an order, or want to sell with us? Reach out any of these ways.",
+    emailUs: "Email us",
+    whatsappDesc: "The fastest way to reach us — chat directly, no waiting.",
+    callDesc: "Prefer to talk it through? Give us a call.",
+    emailDesc: "For anything that needs more detail or documents.",
+    sellCta: "Want to list a car or spare parts?",
   },
   tags: {
     title: "Popular right now",
@@ -231,6 +241,7 @@ const en = {
     tagline: "Rwanda's marketplace for cars and spare parts.",
     marketplaceHeading: "Marketplace",
     accountHeading: "Account",
+    supportHeading: "Support",
     rightsReserved: "All rights reserved.",
   },
   auth: {

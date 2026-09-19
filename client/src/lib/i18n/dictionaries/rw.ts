@@ -8,6 +8,8 @@ const rw: Dictionary = {
     spareParts: "Ibice by'imodoka",
     rent: "Ukukodesha",
     sellWithUs: "Gurisha natwe",
+    contact: "Twandikire",
+    terms: "Amabwiriza n'amasezerano",
     cart: "Igikapu",
     language: "Ururimi",
     currency: "Ifaranga",
@@ -225,6 +227,14 @@ const rw: Dictionary = {
   contact: {
     title: "Ukeneye ubufasha?",
     callUs: "Duhamagare",
+    pageTitle: "Twandikire",
+    pageSubtitle:
+      "Ufite ikibazo ku gicuruzwa, ikurikiranira, cyangwa ushaka kudukorana mu kugurisha? Duhamagare mu buryo bumwe muri ubu.",
+    emailUs: "Twandikire kuri imeyili",
+    whatsappDesc: "Uburyo bwihuse bwo kutugeraho — vugana natwe ako kanya, nta gutegereza.",
+    callDesc: "Wifuza kuvugana natwe? Duhamagare.",
+    emailDesc: "Ku kintu cyose gisaba amakuru menshi cyangwa inyandiko.",
+    sellCta: "Ushaka kugurisha imodoka cyangwa ibice by'imodoka?",
   },
   tags: {
     title: "Ibikunzwe none",
@@ -233,6 +243,7 @@ const rw: Dictionary = {
     tagline: "Isoko ry'u Rwanda ry'imodoka n'ibice byazo.",
     marketplaceHeading: "Isoko",
     accountHeading: "Konti",
+    supportHeading: "Ubufasha",
     rightsReserved: "Uburenganzira bwose burabitswe.",
   },
   auth: {

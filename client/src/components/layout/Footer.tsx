@@ -42,14 +42,14 @@ export function Footer() {
   ].filter((link): link is SocialLink => Boolean(link));
 
   return (
-    <footer className="border-t border-zinc-200 bg-white">
-      <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 gap-8 sm:grid-cols-[2fr_1fr_1fr]">
+    <footer className="border-t-2 border-accent/20 bg-gradient-to-b from-white to-zinc-50">
+      <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 gap-8 sm:grid-cols-[2fr_1fr_1fr_1fr]">
           <div>
             <Link href="/" className="inline-flex items-center">
-              <Image src="/logo.svg" alt="Autorwa" width={266} height={100} className="h-12 w-auto" />
+              <Image src="/logo.svg" alt="Autorwa" width={266} height={100} className="h-14 w-auto" />
             </Link>
-            <p className="mt-3 max-w-xs text-sm text-zinc-500">{dictionary.footer.tagline}</p>
+            <p className="mt-3 max-w-xs text-base text-zinc-600">{dictionary.footer.tagline}</p>
             {socialLinks.length > 0 && (
               <div className="mt-4 flex items-center gap-3">
                 {socialLinks.map((social) => (
@@ -111,6 +111,22 @@ export function Footer() {
               <li>
                 <Link href="/signup" className="hover:text-accent">
                   {dictionary.auth.signUp}
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 className="text-sm font-semibold text-black">{dictionary.footer.supportHeading}</h3>
+            <ul className="mt-3 space-y-2 text-sm text-zinc-500">
+              <li>
+                <Link href="/contact" className="hover:text-accent">
+                  {dictionary.nav.contact}
+                </Link>
+              </li>
+              <li>
+                <Link href="/terms" className="hover:text-accent">
+                  {dictionary.nav.terms}
                 </Link>
               </li>
             </ul>

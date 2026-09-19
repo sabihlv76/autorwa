@@ -82,11 +82,31 @@ body {
   animation: gradient-pan 10s ease-in-out infinite;
 }
 
+@keyframes speed-line {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  10%,
+  90% {
+    opacity: 1;
+  }
+  to {
+    transform: translateX(320%);
+    opacity: 0;
+  }
+}
+
+.animate-speed-line {
+  animation: speed-line 3.6s ease-in-out infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .animate-fade-in-up,
   .animate-gradient-pan,
   .animate-dropdown-in,
-  .animate-modal-in {
+  .animate-modal-in,
+  .animate-speed-line {
     animation: none;
   }
 }

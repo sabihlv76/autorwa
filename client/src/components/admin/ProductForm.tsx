@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useEffect, useState } from "react";
+import { useActionState, useEffect, useRef, useState } from "react";
 import { Flag, type FlagCode } from "@/components/ui/Flag";
 import { FormField } from "@/components/ui/FormField";
 import { FormSection } from "@/components/ui/FormSection";
@@ -65,6 +65,8 @@ export function ProductForm({
     product?.type === "vehicle" ? product.listingType : "sale",
   );
   const errors = state.fieldErrors ?? {};
+  const hasFieldErrors = Object.keys(errors).length > 0;
+  const errorBannerRef = useRef<HTMLParagraphElement>(null);
   const existingMake = product?.type === "vehicle" ? product.make : "";
   const makeOptions =
     existingMake && !ALL_CAR_MAKES.includes(existingMake)
@@ -76,15 +78,28 @@ export function ProductForm({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.success]);
 
+  useEffect(() => {
+    // A long form (the vehicle field set especially) means Submit sits far
+    // below this banner — without scrolling into view, a rejected submission
+    // looks like nothing happened at all.
+    if ((state.error || hasFieldErrors) && !state.success) {
+      errorBannerRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state]);
+
   return (
     <form action={formAction} className="space-y-5">
       {product && <input type="hidden" name="productId" value={product.id} />}
       <input type="hidden" name="type" value={type} />
       <input type="hidden" name="currency" value={currency} />
 
-      {state.error && (
-        <p className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-600">
-          {state.error}
+      {(state.error || hasFieldErrors) && (
+        <p
+          ref={errorBannerRef}
+          className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-600"
+        >
+          {state.error ?? "Please fix the highlighted fields below."}
         </p>
       )}
 
@@ -161,13 +176,19 @@ export function ProductForm({
             label="Availability"
             name="availability"
             defaultValue={product?.availability ?? "available"}
+            errors={errors.availability}
           >
             <option value="available">Available</option>
             <option value="reserved">Reserved</option>
             <option value="sold">Sold</option>
             <option value="out_of_stock">Out of stock</option>
           </SelectField>
-          <SelectField label="Condition" name="condition" defaultValue={product?.condition ?? "used"}>
+          <SelectField
+            label="Condition"
+            name="condition"
+            defaultValue={product?.condition ?? "used"}
+            errors={errors.condition}
+          >
             <option value="new">New</option>
             <option value="used">Used</option>
             <option value="certified_pre_owned">Certified pre-owned</option>
@@ -195,6 +216,7 @@ export function ProductForm({
                 name="make"
                 defaultValue={product?.type === "vehicle" ? product.make : ""}
                 required
+                errors={errors.make}
               >
                 <option value="" disabled>
                   Choose a make
@@ -210,6 +232,7 @@ export function ProductForm({
                 name="model"
                 defaultValue={product?.type === "vehicle" ? product.model : ""}
                 required
+                errors={errors.model}
               />
             </div>
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -231,6 +254,7 @@ export function ProductForm({
                 type="number"
                 defaultValue={product?.type === "vehicle" ? product.year : undefined}
                 required
+                errors={errors.year}
               />
               <FormField
                 label="Mileage (km)"
@@ -238,6 +262,7 @@ export function ProductForm({
                 type="number"
                 defaultValue={product?.type === "vehicle" ? product.mileageKm : undefined}
                 required
+                errors={errors.mileageKm}
               />
             </div>
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
@@ -245,6 +270,7 @@ export function ProductForm({
                 label="Fuel"
                 name="fuel"
                 defaultValue={product?.type === "vehicle" ? product.fuel : "petrol"}
+                errors={errors.fuel}
               >
                 <option value="petrol">Petrol</option>
                 <option value="diesel">Diesel</option>
@@ -255,6 +281,7 @@ export function ProductForm({
                 label="Transmission"
                 name="transmission"
                 defaultValue={product?.type === "vehicle" ? product.transmission : "manual"}
+                errors={errors.transmission}
               >
                 <option value="manual">Manual</option>
                 <option value="automatic">Automatic</option>
@@ -263,6 +290,7 @@ export function ProductForm({
                 label="Drive type"
                 name="driveType"
                 defaultValue={product?.type === "vehicle" ? product.driveType : "fwd"}
+                errors={errors.driveType}
               >
                 <option value="fwd">FWD</option>
                 <option value="rwd">RWD</option>
@@ -278,11 +306,13 @@ export function ProductForm({
                 step="0.1"
                 defaultValue={product?.type === "vehicle" ? product.engineCapacityL : undefined}
                 required
+                errors={errors.engineCapacityL}
               />
               <SelectField
                 label="Body type"
                 name="bodyType"
                 defaultValue={product?.type === "vehicle" ? product.bodyType : "sedan"}
+                errors={errors.bodyType}
               >
                 {["sedan", "suv", "hatchback", "pickup", "van", "coupe", "wagon", "minibus"].map(
                   (bt) => (
@@ -299,12 +329,14 @@ export function ProductForm({
                 name="color"
                 defaultValue={product?.type === "vehicle" ? product.color : ""}
                 required
+                errors={errors.color}
               />
               <FormField
                 label="Location"
                 name="location"
                 defaultValue={product?.type === "vehicle" ? product.location : ""}
                 required
+                errors={errors.location}
               />
             </div>
             <SelectField
@@ -313,6 +345,7 @@ export function ProductForm({
               defaultValue={
                 (product?.type === "vehicle" ? product.stockLocation : undefined) ?? "in_country"
               }
+              errors={errors.stockLocation}
             >
               <option value="in_country">In country</option>
               <option value="incoming">Incoming (to be shipped)</option>
@@ -359,12 +392,14 @@ export function ProductForm({
                   name="minRentalDays"
                   type="number"
                   defaultValue={product?.type === "vehicle" ? product.minRentalDays : 1}
+                  errors={errors.minRentalDays}
                 />
                 <FormField
                   label="Max rental days (optional)"
                   name="maxRentalDays"
                   type="number"
                   defaultValue={product?.type === "vehicle" ? product.maxRentalDays : undefined}
+                  errors={errors.maxRentalDays}
                 />
               </div>
             )}
@@ -377,6 +412,7 @@ export function ProductForm({
             name="partName"
             defaultValue={product?.type === "spare_part" ? product.partName : ""}
             required
+            errors={errors.partName}
           />
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <FormField
@@ -384,12 +420,14 @@ export function ProductForm({
               name="partNumber"
               defaultValue={product?.type === "spare_part" ? product.partNumber : ""}
               required
+              errors={errors.partNumber}
             />
             <FormField
               label="Brand"
               name="brand"
               defaultValue={product?.type === "spare_part" ? product.brand : ""}
               required
+              errors={errors.brand}
             />
           </div>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -398,6 +436,7 @@ export function ProductForm({
               name="category"
               defaultValue={product?.type === "spare_part" ? product.category : ""}
               required
+              errors={errors.category}
             />
             <FormField
               label="Stock"
@@ -405,6 +444,7 @@ export function ProductForm({
               type="number"
               defaultValue={product?.type === "spare_part" ? product.stock : 0}
               required
+              errors={errors.stock}
             />
           </div>
           <FormField
@@ -429,6 +469,7 @@ export function ProductForm({
               defaultValue={
                 product?.type === "spare_part" ? product.compatibleYears?.[0] : undefined
               }
+              errors={errors.compatibleYearFrom}
             />
             <FormField
               label="Compatible to year"
@@ -437,6 +478,7 @@ export function ProductForm({
               defaultValue={
                 product?.type === "spare_part" ? product.compatibleYears?.[1] : undefined
               }
+              errors={errors.compatibleYearTo}
             />
           </div>
           <FormField
@@ -449,6 +491,7 @@ export function ProductForm({
             name="warrantyMonths"
             type="number"
             defaultValue={product?.type === "spare_part" ? product.warrantyMonths : undefined}
+            errors={errors.warrantyMonths}
           />
         </FormSection>
       )}

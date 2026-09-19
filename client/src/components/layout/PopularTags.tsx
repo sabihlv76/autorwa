@@ -32,7 +32,7 @@ export function PopularTags() {
           height={100}
           className={`invisible shrink-0 ${NAVBAR_LOGO_CLASS}`}
         />
-        <div className="flex items-center gap-7 overflow-x-auto">
+        <div className="flex flex-1 items-center justify-center gap-4">
           {TAGS.map((tag) => (
             <Link
               key={tag.label}
